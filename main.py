@@ -1,9 +1,7 @@
 import pygame
 from inicialising import init
 
-
-def main():
-    init()
+def running():
     run = True
     while run:
         for event in pygame.event.get():
@@ -11,6 +9,10 @@ def main():
                 run = False
                 print(run)
                 return
+
+def main():
+    init()
+    running()
 
 
 if __name__ == "__main__":

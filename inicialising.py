@@ -7,7 +7,7 @@ def init():
     clock = pygame.time.Clock()
     clock.tick(60)
     pygame.display.set_caption("My Game")
-    screen.fill((0, 0, 255))
+    screen.fill((0, 0, 0))
     pygame.display.flip()
 
 
