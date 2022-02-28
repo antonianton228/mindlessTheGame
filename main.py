@@ -1,6 +1,3 @@
-import pygame
-
-
 def main():
     print(12331231)
 
