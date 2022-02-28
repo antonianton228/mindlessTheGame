@@ -1,5 +1,5 @@
 def main():
-    print(';123rasdrgaserg')
+    print('попытка')
 
 
 if __name__ == "__main__":
