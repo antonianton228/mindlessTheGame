@@ -1,6 +1,6 @@
 def main():
-    print(12331231)
+    print('антон гей')
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
