@@ -8,6 +8,7 @@ def running():
             if event.type == pygame.QUIT:
                 run = False
                 print(run)
+                print(run)
                 return
 
 def main():
