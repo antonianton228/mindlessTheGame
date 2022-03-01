@@ -13,7 +13,10 @@ def ray_casting(sc, player_pos, player_angle):
             y = y0 + depth * sin_a
             # pygame.draw.line(sc, (10, 10, 10), player_pos, (x, y), 2)
             if (x // tile * tile, y // tile * tile) in world_map:
+                depth *= math.cos(player_angle - cur_angle)
                 proj_height = proj_coof / depth
-                pygame.draw.rect(sc, white, (ray * scale, half_height - proj_height // 2, scale, proj_height))
+                c = 255 / (1 + depth * depth * 0.00001)
+                color = (c, c // 4, c // 2)
+                pygame.draw.rect(sc, color, (ray * scale, half_height - proj_height // 2, scale, proj_height))
                 break
         cur_angle += delta_angle
