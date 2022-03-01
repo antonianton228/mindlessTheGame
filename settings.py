@@ -15,7 +15,9 @@ half_fov = fov / 2
 num_rays = 100
 max_depth = 800
 delta_angle = fov / num_rays
-
+dist = num_rays / (2 * math.tan(half_fov))
+proj_coof = dist * tile
+scale = width // num_rays
 
 # player settings
 player_pos = (half_width, half_height)
@@ -26,3 +28,4 @@ player_speed = 2
 # colors
 black = (0, 0, 0)
 green = (0, 255, 0)
+white = (255, 255, 255)
