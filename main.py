@@ -23,11 +23,6 @@ while True:
     drawing.world(player.pos, player.angle)
     drawing.fps(clock)
 
-    # pygame.draw.circle(sc, green, player.pos, 12)
-    # pygame.draw.line(sc, green, player.pos, (player.x + width * math.cos(player.angle),
-    #                                         player.y + width * math.sin(player.angle)))
-    #for x, y in world_map:
-        # pygame.draw.rect(sc, (255, 255, 255), (x, y, tile, tile), 2)
 
     pygame.display.flip()
     clock.tick(60)

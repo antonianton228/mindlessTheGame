@@ -9,6 +9,7 @@ half_height = height // 2
 FPS = 60
 tile = 100
 
+
 # ray casting settings
 fov = math.pi / 3
 half_fov = fov / 2
