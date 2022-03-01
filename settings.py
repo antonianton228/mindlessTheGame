@@ -12,11 +12,11 @@ tile = 100
 # ray casting settings
 fov = math.pi / 3
 half_fov = fov / 2
-num_rays = 100
+num_rays = 1200
 max_depth = 800
 delta_angle = fov / num_rays
 dist = num_rays / (2 * math.tan(half_fov))
-proj_coof = dist * tile * 3
+proj_coof = dist * tile / 6
 scale = width // num_rays
 
 # player settings
