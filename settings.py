@@ -4,6 +4,7 @@ height = 800
 half_width = width // 2
 half_height = height // 2
 FPS = 60
+tile = 100
 
 # player settings
 player_pos = (half_width, half_height)
