@@ -19,10 +19,10 @@ while True:
             exit()
     player.movement()
     sc.fill(black)
-    drawing.backgraund()
+    drawing.backgraund(player.angle)
     drawing.world(player.pos, player.angle)
     drawing.fps(clock)
 
 
     pygame.display.flip()
-    clock.tick(60)
+    clock.tick(65)
