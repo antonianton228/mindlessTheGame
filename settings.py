@@ -20,6 +20,11 @@ dist = num_rays / (2 * math.tan(half_fov))
 proj_coof = dist * tile * 3
 scale = width // num_rays
 
+# sprites
+double_pi = 2 * math.pi
+center_ray = num_rays // 2 - 1
+
+
 
 # textures
 texture_width = 1200
