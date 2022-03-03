@@ -15,6 +15,7 @@ fov = math.pi / 3
 half_fov = fov / 2
 num_rays = 600
 max_depth = 800
+penta_height = 5 * height
 delta_angle = fov / num_rays
 dist = num_rays / (2 * math.tan(half_fov))
 proj_coof = dist * tile * 1.5
@@ -23,7 +24,7 @@ scale = width // num_rays
 # sprites
 double_pi = 2 * math.pi
 center_ray = num_rays // 2 - 1
-
+fake_rays = 100
 
 
 # textures

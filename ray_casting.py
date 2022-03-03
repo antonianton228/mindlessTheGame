@@ -1,6 +1,6 @@
 import pygame
 from settings import *
-from maps import world_map
+from maps import world_map, world_width, world_height
 
 
 def mapping(a, b):
@@ -10,6 +10,7 @@ def mapping(a, b):
 def ray_casting(player, textures):
     walls = []
     ox, oy = player.pos
+    texture_v, texture_h = 1, 1
     xm, ym = mapping(ox, oy)
     cur_angle = player.angle - half_fov
     for ray in range(num_rays):
@@ -22,7 +23,7 @@ def ray_casting(player, textures):
         else:
             x = xm
             dx = -1
-        for i in range(0, width, tile):
+        for i in range(0, world_width, tile):
             depth_v = (x - ox) / cos_a
             yv = oy + depth_v * sin_a
             tile_v = mapping(x + dx, yv)
@@ -37,7 +38,7 @@ def ray_casting(player, textures):
         else:
             y = ym
             dy = -1
-        for i in range(0, height, tile):
+        for i in range(0, world_height, tile):
             depth_h = (y - oy) / sin_a
             xh = ox + depth_h * cos_a
             tile_h = mapping(xh, y + dy)
