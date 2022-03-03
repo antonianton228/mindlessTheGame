@@ -28,7 +28,7 @@ class Sprites:
             },
             'elf': {
                 'sprite': [pygame.image.load(f'data/sprites/unstatic/vert/elf/{i}.png').convert_alpha() for i in range(1, 6)],
-                'viewing_angles': 72,
+                'viewing_angles': True,
                 'shift': 1.8,
                 'scale': 0.4,
                 'animation': [],
@@ -37,10 +37,10 @@ class Sprites:
             }
         }
         self.list_of_objects = [
-#            SpriteObject(self.sprite_parameters['sprite-barrel'], (7.1, 2.1)),
- #           SpriteObject(self.sprite_parameters['sprite-barrel'], (5.9, 2.1)),
-            SpriteObject(self.sprite_parameters['fire'], (9, 4))
- #           SpriteObject(self.sprite_parameters['elf'],  (7, 4)),
+            SpriteObject(self.sprite_parameters['sprite-barrel'], (7.1, 2.1)),
+            SpriteObject(self.sprite_parameters['sprite-barrel'], (5.9, 2.1)),
+            SpriteObject(self.sprite_parameters['fire'], (9, 4)),
+            SpriteObject(self.sprite_parameters['elf'],  (7, 4)),
         ]
 
 class SpriteObject:
