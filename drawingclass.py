@@ -7,8 +7,8 @@ class Drawing():
     def __init__(self, sc):
         self.sc = sc
         self.font = pygame.font.SysFont('Arial', 36, bold=True)
-        self.textures = {1: pygame.image.load('data/textures/brick1.png').convert(),
-                         2: pygame.image.load('data/textures/brick2.png').convert(),
+        self.textures = {1: pygame.image.load('data/textures/Text_blue.jpg').convert(),
+                         2: pygame.image.load('data/textures/Text_purple.jpg').convert(),
                          5: pygame.image.load('data/textures/sky.png').convert()}
 
     def backgraund(self, angle):
@@ -18,8 +18,12 @@ class Drawing():
         self.sc.blit(self.textures[5], (sky_offset + width, 0))
         pygame.draw.rect(self.sc, yellow, (0, half_height, width, half_width))
 
-    def world(self, player_pos, player_angle):
-        ray_casting(self.sc, player_pos, player_angle, self.textures)
+    def world(self, world_objects):
+        for obj in sorted(world_objects, key=lambda x: x[0], reverse=True):
+            if obj[0]:
+                _, object, object_pos = obj
+                self.sc.blit(object, object_pos)
+
 
     def fps(self, clock):
         display_fps = str(int(clock.get_fps()))

@@ -7,11 +7,11 @@ def mapping(a, b):
     return (a // tile) * tile, (b // tile) * tile
 
 
-def ray_casting(player_pos, player_angle, textures):
+def ray_casting(player, textures):
     walls = []
-    ox, oy = player_pos
+    ox, oy = player.pos
     xm, ym = mapping(ox, oy)
-    cur_angle = player_angle - half_fov
+    cur_angle = player.angle - half_fov
     for ray in range(num_rays):
         sin_a = math.sin(cur_angle)
         cos_a = math.cos(cur_angle)
@@ -48,7 +48,7 @@ def ray_casting(player_pos, player_angle, textures):
         # proj
         depth, offset, texture = (depth_v, yv, texture_v) if depth_v < depth_h else (depth_h, xh, texture_h)
         offset = int(offset) % tile
-        depth *= math.cos(player_angle - cur_angle)
+        depth *= math.cos(player.angle - cur_angle)
         depth = max(depth, 0.000000001)
         proj_height = min(int(proj_coof / depth), 2 * height)
         wall_column = textures[texture].subsurface(offset * texture_scale, 0, texture_scale, texture_height)
