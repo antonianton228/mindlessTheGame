@@ -9,6 +9,7 @@ from ray_casting import ray_casting
 
 pygame.init()
 sc = pygame.display.set_mode((width, height))
+pygame.mouse.set_visible(False)
 clock = pygame.time.Clock()
 player = Player()
 drawing = Drawing(sc)
@@ -25,7 +26,7 @@ while True:
 
     drawing.backgraund(player.angle)
     walls = ray_casting(player, drawing.textures)
-    drawing.world(walls + [obj.object_locate(player, walls) for obj in sprites.list_of_objects])
+    drawing.world(walls + [obj.object_locate(player) for obj in sprites.list_of_objects])
     drawing.fps(clock)
 
 

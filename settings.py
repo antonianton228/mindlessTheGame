@@ -6,6 +6,8 @@ width = 1200
 height = 800
 half_width = width // 2
 half_height = height // 2
+double_height = height * 2
+
 FPS = 65
 tile = 100
 
@@ -25,6 +27,7 @@ scale = width // num_rays
 double_pi = 2 * math.pi
 center_ray = num_rays // 2 - 1
 fake_rays = 100
+fake_rays_range = num_rays - 1 + 2 * fake_rays
 
 
 # textures

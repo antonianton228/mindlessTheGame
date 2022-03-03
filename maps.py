@@ -29,3 +29,7 @@ for i, row in enumerate(matrix_map):
             world_map[(j * tile, i * tile)] = 1
         elif char == 2:
             world_map[(j * tile, i * tile)] = 2
+        elif char == 3:
+            world_map[(j * tile, i * tile)] = 3
+        elif char == 4:
+            world_map[(j * tile, i * tile)] = 4

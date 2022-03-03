@@ -51,7 +51,7 @@ def ray_casting(player, textures):
         offset = int(offset) % tile
         depth *= math.cos(player.angle - cur_angle)
         depth = max(depth, 0.000000001)
-        proj_height = min(int(proj_coof / depth), 2 * height)
+        proj_height = min(int(proj_coof / depth), penta_height)
         wall_column = textures[texture].subsurface(offset * texture_scale, 0, texture_scale, texture_height)
         wall_column = pygame.transform.scale(wall_column, (scale, proj_height))
         wall_pos = (ray * scale, half_height - proj_height // 2)
