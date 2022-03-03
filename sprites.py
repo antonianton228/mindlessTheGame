@@ -14,7 +14,8 @@ class Sprites:
                 'scale': 0.4,
                 'animation': [],
                 'animation_dist': 800,
-                'animation_speed': 10
+                'animation_speed': 10,
+                'blocked': True,
             },
             'fire': {
                 'sprite': pygame.image.load('data/sprites/unstatic/anim/base.png').convert_alpha(),
@@ -24,7 +25,8 @@ class Sprites:
                 'animation': deque(
                     [pygame.image.load(f'data/sprites/unstatic/anim/{i}.png').convert_alpha() for i in range(12)]),
                 'animation_dist': 800,
-                'animation_speed': 10
+                'animation_speed': 10,
+                'blocked': True,
             },
             'elf': {
                 'sprite': [pygame.image.load(f'data/sprites/unstatic/vert/elf/{i}.png').convert_alpha() for i in range(1, 6)],
@@ -33,7 +35,8 @@ class Sprites:
                 'scale': 0.4,
                 'animation': [],
                 'animation_dist': 800,
-                'animation_speed': 10
+                'animation_speed': 10,
+                'blocked': True,
             }
         }
         self.list_of_objects = [
@@ -47,13 +50,16 @@ class SpriteObject:
     def __init__(self, parameters, pos):
         self.object = parameters['sprite']
         self.viewing_angles = parameters['viewing_angles']
-        self.pos = self.x, self.y = pos[0] * tile, pos[1] * tile
         self.shift = parameters['shift']
         self.scale = parameters['scale']
         self.animation = parameters['animation']
         self.animation_dist = parameters['animation_dist']
         self.animation_speed = parameters['animation_speed']
         self.animation_count = 0
+        self.blocked = parameters['blocked']
+        self.side = 30
+        self.x, self.y = pos[0] * tile, pos[1] * tile
+        self.pos = self.x - self.side // 2 , self.y - self.side // 2
         if self.viewing_angles:
             self.sprite_angles = [frozenset(range(i, i + 72)) for i in range(0, 360, 72)]
             self.sprite_position = {angle: pos for angle, pos in zip(self.sprite_angles, self.object)}

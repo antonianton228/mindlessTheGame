@@ -11,9 +11,9 @@ pygame.init()
 sc = pygame.display.set_mode((width, height))
 pygame.mouse.set_visible(False)
 clock = pygame.time.Clock()
-player = Player()
 drawing = Drawing(sc)
 sprites = Sprites()
+player = Player(sprites)
 from drawingclass import Drawing
 
 while True:

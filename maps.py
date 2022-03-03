@@ -1,4 +1,5 @@
 from settings import *
+import pygame
 
 _ = False
 matrix_map = [
@@ -23,13 +24,16 @@ matrix_map = [
 world_width = len(matrix_map[0]) * tile
 world_height = len(matrix_map) * tile
 world_map = {}
+collision_walls = []
 for i, row in enumerate(matrix_map):
     for j, char in enumerate(row):
-        if char == 1:
-            world_map[(j * tile, i * tile)] = 1
-        elif char == 2:
-            world_map[(j * tile, i * tile)] = 2
-        elif char == 3:
-            world_map[(j * tile, i * tile)] = 3
-        elif char == 4:
-            world_map[(j * tile, i * tile)] = 4
+        if char:
+            collision_walls.append(pygame.Rect(j * tile, i * tile, tile, tile))
+            if char == 1:
+                world_map[(j * tile, i * tile)] = 1
+            elif char == 2:
+                world_map[(j * tile, i * tile)] = 2
+            elif char == 3:
+                world_map[(j * tile, i * tile)] = 3
+            elif char == 4:
+                world_map[(j * tile, i * tile)] = 4
