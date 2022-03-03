@@ -4,7 +4,7 @@ from settings import *
 from maps import world_map
 from drawingclass import Drawing
 from sprites import *
-from ray_casting import ray_casting
+from ray_casting import ray_casting_walls
 
 
 pygame.init()
@@ -25,7 +25,7 @@ while True:
 
 
     drawing.backgraund(player.angle)
-    walls = ray_casting(player, drawing.textures)
+    walls = ray_casting_walls(player, drawing.textures)
     drawing.world(walls + [obj.object_locate(player) for obj in sprites.list_of_objects])
     drawing.fps(clock)
 
