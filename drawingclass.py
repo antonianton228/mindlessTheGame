@@ -7,10 +7,10 @@ class Drawing():
     def __init__(self, sc):
         self.sc = sc
         self.font = pygame.font.SysFont('Arial', 36, bold=True)
-        self.textures = {1: pygame.image.load('data/textures/Text_blue.jpg').convert(),
-                         2: pygame.image.load('data/textures/Text_purple.jpg').convert(),
-                         3: pygame.image.load('data/textures/tree.jpg').convert(),
-                         4: pygame.image.load('data/textures/zav.jpg').convert(),
+        self.textures = {1: pygame.image.load('data/textures/forest1.png').convert(),
+                         2: pygame.image.load('data/textures/forest1.png').convert(),
+                         3: pygame.image.load('data/textures/forest1.png').convert(),
+                         4: pygame.image.load('data/textures/forest1.png').convert(),
 
                          5: pygame.image.load('data/textures/sky.png').convert()}
 
