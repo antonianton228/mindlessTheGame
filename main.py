@@ -14,7 +14,6 @@ clock = pygame.time.Clock()
 drawing = Drawing(sc)
 sprites = Sprites()
 player = Player(sprites)
-from drawingclass import Drawing
 
 while True:
     for event in pygame.event.get():

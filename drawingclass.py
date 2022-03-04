@@ -11,7 +11,6 @@ class Drawing():
                          2: pygame.image.load('data/textures/forest1.png').convert(),
                          3: pygame.image.load('data/textures/forest1.png').convert(),
                          4: pygame.image.load('data/textures/forest1.png').convert(),
-
                          5: pygame.image.load('data/textures/sky.png').convert()}
 
     def backgraund(self, angle):
