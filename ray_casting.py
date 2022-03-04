@@ -1,7 +1,7 @@
 import pygame
 from settings import *
 from maps import world_map, world_width, world_height
-from numba import  njit
+from numba import njit
 
 
 @njit(fastmath=True)
