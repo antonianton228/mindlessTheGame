@@ -11,7 +11,7 @@ class Sprites:
             'sprite-barrel':{
                 'sprite': pygame.image.load('data/sprites/static/barrel.png').convert_alpha(),
                 'viewing_angles': None,
-                'shift': 1.8,
+                'shift': 2.7,
                 'scale': 0.4,
                 'animation': [],
                 'animation_dist': 800,
