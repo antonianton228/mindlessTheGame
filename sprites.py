@@ -1,6 +1,7 @@
 import pygame
 from settings import *
 from collections import deque
+from ray_casting import ray_casting
 
 
 
@@ -37,14 +38,29 @@ class Sprites:
                 'animation_dist': 800,
                 'animation_speed': 10,
                 'blocked': True,
+            },
+            'floor': {
+                'sprite': pygame.image.load('data/textures/grass.jpg').convert_alpha(),
+                'viewing_angles': None,
+                'shift': 1.8,
+                'scale': 1,
+                'animation': [],
+                'animation_dist': 800,
+                'animation_speed': 10,
+                'blocked': True,
             }
         }
+
         self.list_of_objects = [
             SpriteObject(self.sprite_parameters['sprite-barrel'], (7.1, 2.1)),
             SpriteObject(self.sprite_parameters['sprite-barrel'], (5.9, 2.1)),
             SpriteObject(self.sprite_parameters['fire'], (9, 4)),
             SpriteObject(self.sprite_parameters['elf'],  (7, 4)),
+
+
         ]
+        # for i in :
+        #     list_of_objects.append(SpriteObject(self.sprite_parameters['sprite-barrel'],  (i[0] // 100, i[1] // 100)))
 
 class SpriteObject:
     def __init__(self, parameters, pos):

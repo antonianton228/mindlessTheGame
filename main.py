@@ -20,7 +20,6 @@ while True:
         if event.type == pygame.QUIT:
             exit()
     player.movement()
-    sc.fill(black)
 
 
     drawing.backgraund(player.angle)

@@ -54,7 +54,6 @@ def ray_casting(player_pos, player_angle, world_map):
         depth *= math.cos(player_angle - cur_angle)
         depth = max(depth, 0.000000001)
         proj_height = min(int(proj_coof / depth), penta_height)
-
         casted_walls.append((depth, offset, proj_height, texture))
         cur_angle += delta_angle
     return casted_walls
