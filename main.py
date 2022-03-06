@@ -18,14 +18,31 @@ sprites = Sprites()
 player = Player(sprites)
 
 
-hres = 100  # horizontal resolution
-halfvres = 200  # vertical resolution/2
+hres = 500  # horizontal resolution
+halfvres = 100  # vertical resolution/2
 mod = hres / 60  # scaling factor (60° fov)
-posx, posy, rot = *player.pos, player.angle
+posx, posy, rot = 0, 0, 0
 frame = np.random.uniform(0, 1, (hres, halfvres * 2, 3))
 sky = pygame.image.load('data/textures/skybox2.jpg')
 sky = pygame.surfarray.array3d(pygame.transform.scale(sky, (360, halfvres * 2))) / 255
 floor = pygame.surfarray.array3d(pygame.image.load('data/textures/floor.jpg')) / 255
+
+
+def movement(posx, posy, rot, keys, et):
+    if keys[pygame.K_LEFT] or keys[ord('a')]:
+        posx, posy = posx - np.cos(rot) * 0.002 * et, posy + np.sin(rot) * 0.002 * et
+
+    if keys[pygame.K_RIGHT] or keys[ord('d')]:
+        posx, posy = posx + np.cos(rot) * 0.002 * et, posy - np.sin(rot) * 0.002 * et
+
+    if keys[pygame.K_UP] or keys[ord('w')]:
+        posx, posy = posx + np.cos(rot) * 0.002 * et, posy + np.sin(rot) * 0.002 * et
+
+    if keys[pygame.K_DOWN] or keys[ord('s')]:
+        posx, posy = posx - np.cos(rot) * 0.002 * et, posy - np.sin(rot) * 0.002 * et
+
+
+    return posx, posy
 
 
 @njit()
@@ -38,10 +55,8 @@ def new_frame(posx, posy, rot, frame, sky, floor, hres, halfvres, mod):
             n = (halfvres / (halfvres - j)) / cos2
             x, y = posx + cos * n, posy + sin * n
             xx, yy = int(x * 2 % 1 * 99), int(y * 2 % 1 * 99)
-
-            shade = 0.2 + 0.8 * (1 - j / halfvres)
-
-            frame[i][halfvres * 2 - j - 1] = shade * floor[xx][yy]
+            #shade = 0.2 + 0.8 * (1 - j / halfvres)
+            frame[i][halfvres * 2 - j - 1] = floor[xx][yy]
 
     return frame
 
@@ -49,14 +64,16 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
+
+    player.movement()
+
     frame = new_frame(posx, posy, rot, frame, sky, floor, hres, halfvres, mod)
     surf = pygame.surfarray.make_surface(frame * 255)
     surf = pygame.transform.scale(surf, (1200, 800))
     sc.blit(surf, (0, 0))
-    posx, posy, rot = player.pos[1], player.pos[0], player.angle
+    posx, posy, rot = *movement(posx, posy, rot, pygame.key.get_pressed(), clock.tick()), player.angle
 
 
-    player.movement()
 
 
 
@@ -70,5 +87,9 @@ while True:
 
     pygame.display.flip()
     clock.tick(65)
+
+
+
+
 
 

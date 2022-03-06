@@ -41,7 +41,7 @@ texture_scale = texture_width // tile
 # player settings
 player_pos = (half_width // 4, half_height - 50)
 player_angle = 0
-player_speed = 2
+player_speed = 4
 
 
 # colors
