@@ -1,4 +1,6 @@
 import math
+import numpy as np
+import pygame
 
 
 # game settings
@@ -51,3 +53,4 @@ darkgrey = (100, 100, 100)
 yellow = (255, 255, 0)
 skyblue = (0, 186, 255)
 red = (255, 0, 0)
+

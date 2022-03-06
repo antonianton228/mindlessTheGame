@@ -5,7 +5,8 @@ from maps import world_map
 from drawingclass import Drawing
 from sprites import *
 from ray_casting import ray_casting_walls
-from floor_casting import floor_casting
+import numpy as np
+from numba import njit
 
 
 pygame.init()
@@ -16,19 +17,58 @@ drawing = Drawing(sc)
 sprites = Sprites()
 player = Player(sprites)
 
+
+hres = 100  # horizontal resolution
+halfvres = 200  # vertical resolution/2
+mod = hres / 60  # scaling factor (60° fov)
+posx, posy, rot = *player.pos, player.angle
+frame = np.random.uniform(0, 1, (hres, halfvres * 2, 3))
+sky = pygame.image.load('data/textures/skybox2.jpg')
+sky = pygame.surfarray.array3d(pygame.transform.scale(sky, (360, halfvres * 2))) / 255
+floor = pygame.surfarray.array3d(pygame.image.load('data/textures/floor.jpg')) / 255
+
+
+@njit()
+def new_frame(posx, posy, rot, frame, sky, floor, hres, halfvres, mod):
+    for i in range(hres):
+        rot_i = rot + np.deg2rad(i / mod - 30)
+        sin, cos, cos2 = np.sin(rot_i), np.cos(rot_i), np.cos(np.deg2rad(i / mod - 30))
+        frame[i][:] = sky[int(np.rad2deg(rot_i) % 359)][:]
+        for j in range(halfvres):
+            n = (halfvres / (halfvres - j)) / cos2
+            x, y = posx + cos * n, posy + sin * n
+            xx, yy = int(x * 2 % 1 * 99), int(y * 2 % 1 * 99)
+
+            shade = 0.2 + 0.8 * (1 - j / halfvres)
+
+            frame[i][halfvres * 2 - j - 1] = shade * floor[xx][yy]
+
+    return frame
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             exit()
+    frame = new_frame(posx, posy, rot, frame, sky, floor, hres, halfvres, mod)
+    surf = pygame.surfarray.make_surface(frame * 255)
+    surf = pygame.transform.scale(surf, (1200, 800))
+    sc.blit(surf, (0, 0))
+    posx, posy, rot = *player.pos, player.angle
+
+
     player.movement()
+
+
+
 
 
     drawing.backgraund(player.angle)
     walls = ray_casting_walls(player, drawing.textures)
-    floor_casting(sc)
     drawing.world(walls + [obj.object_locate(player) for obj in sprites.list_of_objects])
     drawing.fps(clock)
 
 
     pygame.display.flip()
     clock.tick(65)
+
+
