@@ -53,7 +53,7 @@ while True:
     surf = pygame.surfarray.make_surface(frame * 255)
     surf = pygame.transform.scale(surf, (1200, 800))
     sc.blit(surf, (0, 0))
-    posx, posy, rot = *player.pos, player.angle
+    posx, posy, rot = player.pos[1], player.pos[0], player.angle
 
 
     player.movement()
