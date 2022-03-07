@@ -32,6 +32,9 @@ class Drawing():
         self.shot_animation_count = 0
         self.shot_animation_trigger = True
 
+        self.sfx = deque([pygame.image.load(f'data/sprites/sfx/shotgun/{i}.png').convert_alpha() for i in range(9)])
+        self.sfx_lenght_count = 0
+        self.sfx_lenght = len(self.sfx)
 
 
 
@@ -48,8 +51,10 @@ class Drawing():
         self.sc.blit(render,(width - 65, 5))
 
 
-    def player_weapon(self):
+    def player_weapon(self, shots):
         if self.player.shot:
+            self.shot_proj = min(shots)[1] // 2
+            self.bullet_sfx()
             shot_sprite = self.weapon_shot_animation[0]
             self.sc.blit(shot_sprite, self.weapon_pos)
             self.shot_animation_count += 1
@@ -61,6 +66,18 @@ class Drawing():
             if self.shot_lenght_count == self.shot_lenght:
                 self.player.shot = False
                 self.shot_lenght_count = 0
+                self.sfx_lenght_count = 0
                 self.shot_animation_trigger = True
         else:
             self.sc.blit(self.weapon_base_sprite, self.weapon_pos)
+
+
+    def bullet_sfx(self):
+        if self.sfx_lenght_count < self.sfx_lenght:
+            sfx = pygame.transform.scale(self.sfx[0],
+                                         (self.shot_proj, self.shot_proj))
+            sfx_rect = sfx.get_rect()
+            self.sc.blit(sfx, (half_width - sfx_rect.w // 2,
+                               half_height - sfx_rect.h // 2))
+            self.sfx_lenght_count += 1
+            self.sfx.rotate(-1)

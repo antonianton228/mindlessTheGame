@@ -64,6 +64,9 @@ def ray_casting(player_pos, player_angle, world_map):
 def ray_casting_walls(player, textures):
     casted_walls = ray_casting(player.pos, player.angle, world_map)
     walls = []
+    wall_hit = casted_walls[center_ray][0], casted_walls[center_ray][2]
+
+
     for ray, casted_values in enumerate(casted_walls):
         depth, offset, proj_height, texture = casted_values
         if proj_height > height:
@@ -79,4 +82,4 @@ def ray_casting_walls(player, textures):
             wall_column = pygame.transform.scale(wall_column, (scale, proj_height * 2))
             wall_pos = (ray * scale, half_height - proj_height * 1.22)
         walls.append((depth, wall_column, wall_pos))
-    return walls
+    return walls, wall_hit

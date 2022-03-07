@@ -54,10 +54,10 @@ while True:
     sc.blit(surf, (0, 0))
     player.movement()
     posx, posy, rot = player.movement_floor(posx, posy, rot, pygame.key.get_pressed(), clock.tick())
-    walls = ray_casting_walls(player, drawing.textures)
+    walls, wall_hit = ray_casting_walls(player, drawing.textures)
     drawing.world(walls + [obj.object_locate(player) for obj in sprites.list_of_objects])
     drawing.fps(clock)
-    drawing.player_weapon()
+    drawing.player_weapon([wall_hit, sprites.sprite_hit])
     pygame.display.flip()
     clock.tick(65)
 
