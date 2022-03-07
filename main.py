@@ -17,8 +17,8 @@ sprites = Sprites()
 player = Player(sprites)
 
 
-hres = 300  # horizontal resolution
-halfvres = 150  # vertical resolution/2
+hres = 400  # horizontal resolution
+halfvres = 200  # vertical resolution/2
 mod = hres / 60  # scaling factor (60° fov)
 posx, posy, rot = 0, 0, 0
 frame = np.random.uniform(0, 1, (hres, halfvres * 2, 3))
