@@ -12,13 +12,12 @@ class Player:
         self.sensivity = 0.002
         # collision
         self.side = 50
-        self.collision_sprites = [pygame.Rect(*obj.pos, obj.side, obj.side) for obj in
-                                  self.sprites.list_of_objects if obj.blocked]
-        self.collision_list = collision_walls + self.collision_sprites
         self.rect = pygame.Rect(*player_pos, self.side, self.side)
         self.flag1 = True  # это кринж но подругому не сделать
         self.flag2 = True  # это кринж но подругому не сделать
         self.flag = True  # это кринж но подругому не сделать
+        # weapon
+        self.shot = False
 
 
 
@@ -26,6 +25,14 @@ class Player:
     @property
     def pos(self):
         return self.x, self.y
+
+    def collision_list(self):
+        return  collision_walls + [pygame.Rect(*obj.pos, obj.side, obj.side) for obj in
+                                  self.sprites.list_of_objects if obj.blocked]
+
+
+
+
 
     def movement(self):
         self.get_key()
@@ -41,11 +48,11 @@ class Player:
         self.flag2 = True
         next_rect = self.rect.copy()
         next_rect.move_ip(dx, dy)
-        hit_indexes = next_rect.collidelistall(self.collision_list)
+        hit_indexes = next_rect.collidelistall(self.collision_list())
         if len(hit_indexes):
             delta_x, delta_y = 0, 0
             for hit_index in hit_indexes:
-                hit_rect = self.collision_list[hit_index]
+                hit_rect = self.collision_list()[hit_index]
                 if dx > 0:
                     delta_x += next_rect.right - hit_rect.left
                 else:
@@ -63,6 +70,7 @@ class Player:
             elif delta_y > delta_x:
                 dx = 0
                 self.flag2 = False
+
         self.x += dx
         self.y += dy
 
@@ -91,6 +99,12 @@ class Player:
             dx = -player_speed * sin_a
             dy = player_speed * cos_a
             self.detect_collision(dx, dy)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                exit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1 and not self.shot:
+                    self.shot = True
 
         return self.x, self.y, self.angle
 
@@ -99,6 +113,7 @@ class Player:
             diff = pygame.mouse.get_pos()[0] - half_width
             pygame.mouse.set_pos((half_width, half_height))
             self.angle += diff * self.sensivity
+        return self.angle
 
     def movement_floor(self, posx, posy, rot, keys, et):
         if self.flag:
@@ -114,14 +129,11 @@ class Player:
 
             if keys[pygame.K_DOWN] or keys[ord('s')]:
                 posx, posy = posx - np.cos(rot) * 0.002 * et, posy - np.sin(rot) * 0.002 * et
-            if pygame.mouse.get_focused():
-                diff = pygame.mouse.get_pos()[0] - half_width
-                pygame.mouse.set_pos((half_width, half_height))
-                self.angle += diff * self.sensivity
+            rot = self.mouse_control()
             if not self.flag1:
                 posy = 0
             if not self.flag2:
                 posx = 0
-            return posx, posy, self.angle
+            return posx, posy, rot
         else:
-            return 0, 0, self.angle
+            return 0, 0, rot

@@ -55,3 +55,5 @@ yellow = (255, 255, 0)
 skyblue = (0, 186, 255)
 red = (255, 0, 0)
 
+# floor
+rot = 0

@@ -1,14 +1,16 @@
 import pygame
 from settings import *
-from  ray_casting import ray_casting
+from ray_casting import ray_casting
+from collections import deque
 
 
 
 
 
 class Drawing():
-    def __init__(self, sc):
+    def __init__(self, sc, player):
         self.sc = sc
+        self.player = player
         self.font = pygame.font.SysFont('Arial', 36, bold=True)
         self.textures = {1: pygame.image.load('data/textures/forest1.png').convert(),
                          2: pygame.image.load('data/textures/forest1.png').convert(),
@@ -16,6 +18,22 @@ class Drawing():
                          4: pygame.image.load('data/textures/forest1.png').convert(),
                          5: pygame.image.load('data/textures/sky.png').convert(),
                          6: pygame.image.load('data/textures/grass.jpg').convert()}
+
+        # weapens
+        self.weapon_base_sprite = pygame.image.load('data/sprites/weapons/shotgun/default.png')
+        self.weapon_shot_animation = deque([pygame.image.load(f'data/sprites/weapons/shotgun/{i}.png').convert_alpha()
+                                            for i in range(20)])
+        self.weapon_rect = self.weapon_base_sprite.get_rect()
+        self.weapon_pos = (half_width - self.weapon_rect.width // 2, height
+                           - self.weapon_rect.height)
+        self.shot_lenght = len(self.weapon_shot_animation)
+        self.shot_lenght_count = 0
+        self.shot_animation_speed = 1
+        self.shot_animation_count = 0
+        self.shot_animation_trigger = True
+
+
+
 
 
     def world(self, world_objects):
@@ -28,3 +46,21 @@ class Drawing():
         display_fps = str(int(clock.get_fps()))
         render = self.font.render(display_fps, 0, red)
         self.sc.blit(render,(width - 65, 5))
+
+
+    def player_weapon(self):
+        if self.player.shot:
+            shot_sprite = self.weapon_shot_animation[0]
+            self.sc.blit(shot_sprite, self.weapon_pos)
+            self.shot_animation_count += 1
+            if self.shot_animation_count == self.shot_animation_speed:
+                self.weapon_shot_animation.rotate(-1)
+                self.shot_animation_count = 0
+                self.shot_lenght_count += 1
+                self.shot_animation_trigger = False
+            if self.shot_lenght_count == self.shot_lenght:
+                self.player.shot = False
+                self.shot_lenght_count = 0
+                self.shot_animation_trigger = True
+        else:
+            self.sc.blit(self.weapon_base_sprite, self.weapon_pos)

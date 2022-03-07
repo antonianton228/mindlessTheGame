@@ -12,9 +12,10 @@ pygame.init()
 sc = pygame.display.set_mode((width, height))
 pygame.mouse.set_visible(False)
 clock = pygame.time.Clock()
-drawing = Drawing(sc)
 sprites = Sprites()
 player = Player(sprites)
+drawing = Drawing(sc , player)
+
 
 
 hres = 400  # horizontal resolution
@@ -45,18 +46,18 @@ def new_frame(posx, posy, rot, frame, sky, floor, hres, halfvres, mod):
 
 
 while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            exit()
-    player.movement()
+
+
     frame = new_frame(posx, posy, rot, frame, sky, floor, hres, halfvres, mod)
     surf = pygame.surfarray.make_surface(frame * 255)
     surf = pygame.transform.scale(surf, (1200, 800))
     sc.blit(surf, (0, 0))
+    player.movement()
     posx, posy, rot = player.movement_floor(posx, posy, rot, pygame.key.get_pressed(), clock.tick())
     walls = ray_casting_walls(player, drawing.textures)
     drawing.world(walls + [obj.object_locate(player) for obj in sprites.list_of_objects])
     drawing.fps(clock)
+    drawing.player_weapon()
     pygame.display.flip()
     clock.tick(65)
 
