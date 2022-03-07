@@ -35,6 +35,7 @@ fake_rays_range = num_rays - 1 + 2 * fake_rays
 # textures
 texture_width = 1200
 texture_height = 1200
+half_texture_height = texture_height // 2
 texture_scale = texture_width // tile
 
 
