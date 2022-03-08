@@ -57,7 +57,7 @@ class Sprites:
                 'animation': [],
                 'death_animation': deque([pygame.image.load(f'data/sprites/npc/unfriendly/testsquare/{i}.png')] for i in range(6)),
                 'is_death': None,
-                'dead_shift': 0.5
+                'dead_shift': 0.5,
                 'animation_dist': 800,
                 'animation_speed': 10,
                 'blocked': True,
