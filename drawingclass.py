@@ -81,3 +81,8 @@ class Drawing():
                                half_height - sfx_rect.h // 2))
             self.sfx_lenght_count += 1
             self.sfx.rotate(-1)
+
+
+    def floor_drow(self, sc):
+        pygame.draw.rect(sc, skyblue, (0, 0, 1200, 400))
+        pygame.draw.rect(sc, grassgreen, (0, 400, 1200, 800))

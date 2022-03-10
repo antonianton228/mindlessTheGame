@@ -56,18 +56,21 @@ class Sprites:
                 'scale': (0.4, 0.4),
                 'animation': [],
                 'death_animation': deque([pygame.image.load(f'data/sprites/npc/unfriendly/testsquare/{i}.png')] for i in range(6)),
-                'is_death': None,
+                'is_dead': None,
+                'side': 30,
                 'dead_shift': 0.5,
                 'animation_dist': 800,
                 'animation_speed': 10,
                 'blocked': True,
+                'flag': 'npc',
+                'obj_action': [pygame.image.load('data/sprites/npc/unfriendly/testsquare/0.png')],
             },
         }
 
         self.list_of_objects = [
-            SpriteObject(self.sprite_parameters['sprite-barrel'], (7.1, 2.1)),
-            SpriteObject(self.sprite_parameters['sprite-barrel'], (5.9, 2.1)),
-            SpriteObject(self.sprite_parameters['fire'], (9, 4)),
+            # SpriteObject(self.sprite_parameters['sprite-barrel'], (7.1, 2.1)),
+            # SpriteObject(self.sprite_parameters['sprite-barrel'], (5.9, 2.1)),
+            # SpriteObject(self.sprite_parameters['fire'], (9, 4)),
             SpriteObject(self.sprite_parameters['square'],  (7, 4)),
 
 
@@ -82,17 +85,29 @@ class Sprites:
 
 class SpriteObject:
     def __init__(self, parameters, pos):
-        self.object = parameters['sprite']
+        self.object = parameters['sprite'].copy()
         self.viewing_angles = parameters['viewing_angles']
         self.shift = parameters['shift']
         self.scale = parameters['scale']
-        self.animation = parameters['animation']
+        self.animation = parameters['animation'].copy()
+        # ---------------------
+        self.death_animation = parameters['death_animation'].copy()
+        self.is_dead = parameters['is_dead']
+        self.dead_shift = parameters['dead_shift']
+        # ---------------------
         self.animation_dist = parameters['animation_dist']
         self.animation_speed = parameters['animation_speed']
-        self.animation_count = 0
         self.blocked = parameters['blocked']
-        self.side = 30
+        self.flag = parameters['flag']
+        self.obj_action = parameters['obj_action'].copy()
         self.x, self.y = pos[0] * tile, pos[1] * tile
+        self.side = parameters['side']
+        self.dead_animation_count = 0
+        self.animation_count = 0
+        self.npc_action_trigger = False
+        self.door_open_trigger = False
+        self.door_prev_pos = self.y if self.flag == 'door_h' else self.x
+        self.delete = False
         if self.viewing_angles:
             self.sprite_angles = [frozenset(range(i, i + 72)) for i in range(0, 360, 72)]
             self.sprite_position = {angle: pos for angle, pos in zip(self.sprite_angles, self.object)}
@@ -129,7 +144,7 @@ class SpriteObject:
 
         fake_ray = self.current_ray + fake_rays
         if 0 <= fake_ray <= fake_rays_range and self.distance_to_sprite > 30:
-            self.proj_height = min(int(proj_coof / self.distance_to_sprite * self.scale), double_height)
+            self.proj_height = min(int(proj_coof / self.distance_to_sprite * self.scale[0]), double_height)
             half_proj_height = self.proj_height // 2
             shift = half_proj_height * self.shift
 

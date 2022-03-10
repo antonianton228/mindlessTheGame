@@ -116,24 +116,25 @@ class Player:
         return self.angle
 
     def movement_floor(self, posx, posy, rot, keys, et):
-        if self.flag:
-            if keys[pygame.K_LEFT] or keys[ord('a')]:
-                px, py = np.sin(rot) * 0.002 * et, np.cos(rot) * 0.002 * et
-                posx, posy = posx + px, posy - py
-
-            if keys[pygame.K_RIGHT] or keys[ord('d')]:
-                posx, posy = posx - np.sin(rot) * 0.002 * et, posy + np.cos(rot) * 0.002 * et
-
-            if keys[pygame.K_UP] or keys[ord('w')]:
-                posx, posy = posx + np.cos(rot) * 0.002 * et, posy + np.sin(rot) * 0.002 * et
-
-            if keys[pygame.K_DOWN] or keys[ord('s')]:
-                posx, posy = posx - np.cos(rot) * 0.002 * et, posy - np.sin(rot) * 0.002 * et
-            rot = self.mouse_control()
-            if not self.flag1:
-                posy = 0
-            if not self.flag2:
-                posx = 0
-            return posx, posy, rot
-        else:
-            return 0, 0, rot
+        return 0, 0, 0
+        # if self.flag:
+        #     if keys[pygame.K_LEFT] or keys[ord('a')]:
+        #         px, py = np.sin(rot) * 0.002 * et, np.cos(rot) * 0.002 * et
+        #         posx, posy = posx + px, posy - py
+        #
+        #     if keys[pygame.K_RIGHT] or keys[ord('d')]:
+        #         posx, posy = posx - np.sin(rot) * 0.002 * et, posy + np.cos(rot) * 0.002 * et
+        #
+        #     if keys[pygame.K_UP] or keys[ord('w')]:
+        #         posx, posy = posx + np.cos(rot) * 0.002 * et, posy + np.sin(rot) * 0.002 * et
+        #
+        #     if keys[pygame.K_DOWN] or keys[ord('s')]:
+        #         posx, posy = posx - np.cos(rot) * 0.002 * et, posy - np.sin(rot) * 0.002 * et
+        #     rot = self.mouse_control()
+        #     if not self.flag1:
+        #         posy = 0
+        #     if not self.flag2:
+        #         posx = 0
+        #     return posx, posy, rot
+        # else:
+        #     return 0, 0, rot

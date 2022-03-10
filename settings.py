@@ -54,6 +54,7 @@ darkgrey = (100, 100, 100)
 yellow = (255, 255, 0)
 skyblue = (0, 186, 255)
 red = (255, 0, 0)
+grassgreen = (48, 156, 98)
 
 # floor
 rot = 0
