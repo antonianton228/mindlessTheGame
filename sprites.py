@@ -109,7 +109,9 @@ class SpriteObject:
         self.door_prev_pos = self.y if self.flag == 'door_h' else self.x
         self.delete = False
         if self.viewing_angles:
-            self.sprite_angles = [frozenset(range(i, i + 72)) for i in range(0, 360, 72)]
+            if len(self.object) == 0:
+                self.sprite_angles = [frozenset(range(338, 361)) | frozenset(range(0, 23))] + \
+                    [frozenset(range(i, i + 72)) for i in range(0, 360, 72)]
             self.sprite_position = {angle: pos for angle, pos in zip(self.sprite_angles, self.object)}
 
 
@@ -137,6 +139,7 @@ class SpriteObject:
         gamma = self.theta - player.angle
         if dx > 0 and 180 <= math.degrees(player.angle) <= 360 or dx < 0 and dy < 0:
             gamma += double_pi
+        self.theta -= 1.4 * gamma
 
         delta_rays = int(gamma / delta_angle)
         self.current_ray = center_ray + delta_rays
@@ -145,6 +148,8 @@ class SpriteObject:
         fake_ray = self.current_ray + fake_rays
         if 0 <= fake_ray <= fake_rays_range and self.distance_to_sprite > 30:
             self.proj_height = min(int(proj_coof / self.distance_to_sprite * self.scale[0]), double_height)
+            sprite_width = int(self.proj_height * self.scale[0])
+            sprite_height = int(self.proj_height * self.scale[1])
             half_proj_height = self.proj_height // 2
             shift = half_proj_height * self.shift
 
