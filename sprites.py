@@ -64,7 +64,7 @@ class Sprites:
                     [pygame.image.load(f'data/sprites/unstatic/anim/{i}.png').convert_alpha() for i in range(12)]),
                 'death_animation': deque(
                     [pygame.image.load(f'data/sprites/npc/unfriendly/testsquare/{i}.png')] for i in range(6)),
-                'is_dead': None,
+                'is_dead': 'immortal',
                 'side': 30,
                 'dead_shift': 0.5,
                 'animation_dist': 800,
@@ -74,7 +74,6 @@ class Sprites:
                 'obj_action': [pygame.image.load('data/sprites/npc/unfriendly/testsquare/0.png')],
             },
         }
-
         self.list_of_objects = [
             # SpriteObject(self.sprite_parameters['sprite-barrel'], (7.1, 2.1)),
             # SpriteObject(self.sprite_parameters['sprite-barrel'], (5.9, 2.1)),
@@ -163,7 +162,7 @@ class SpriteObject:
             shift = half_proj_height * self.shift
 
             if self.is_dead and self.is_dead != 'immortal':
-                sprite_object = self.dead_anim()
+                sprite_object = self.dead_anim()[0]
                 shift = half_sprite_height * self.dead_shift
                 sprite_height = int(sprite_height / 1.3)
             elif self.npc_action_trigger:
@@ -215,9 +214,10 @@ class SpriteObject:
         return self.dead_sprite
 
     def npc_ai(self):
+        sprite_object = self.obj_action[0]
         if self.animation_count < self.animation_speed:
             self.animation_count += 1
         else:
             self.obj_action.rotate()
             self.animation_count = 0
-        return self.obj_action
+        return sprite_object

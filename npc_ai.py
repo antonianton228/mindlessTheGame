@@ -5,12 +5,13 @@ import math
 import pygame
 from numba import njit
 
-@njit(fastmath=True, cash=True)
+@njit(fastmath=True, cache=True)
 def ray_casting_npc_player(npc_x, npc_y, world_map, player_pos):
     ox, oy = player_pos
     xm, ym = mapping(ox, oy)
     d_x, d_y = ox - npc_x, oy-npc_y
-    cur_angle = math.atan2(d_y, d_x)
+    cur_angle = math.atan2(d_y, d_x) + math.pi
+
     sin_a = math.sin(cur_angle)
     cos_a = math.cos(cur_angle)
     # vert
@@ -20,13 +21,12 @@ def ray_casting_npc_player(npc_x, npc_y, world_map, player_pos):
     else:
         x = xm
         dx = -1
-    for i in range(0, world_width, tile):
+    for i in range(0, int(abs(d_x)) // tile):
         depth_v = (x - ox) / cos_a
         yv = oy + depth_v * sin_a
         tile_v = mapping(x + dx, yv)
         if tile_v in world_map:
-            texture_v = world_map[tile_v]
-            break
+            return False
         x += dx * tile
     # hor
     if sin_a >= 0:
@@ -35,11 +35,34 @@ def ray_casting_npc_player(npc_x, npc_y, world_map, player_pos):
     else:
         y = ym
         dy = -1
-    for i in range(0, world_height, tile):
+    for i in range(0, int(abs(d_y)) // tile):
         depth_h = (y - oy) / sin_a
         xh = ox + depth_h * cos_a
         tile_h = mapping(xh, y + dy)
         if tile_h in world_map:
-            texture_h = world_map[tile_h]
-            break
+            return False
         y += dy * tile
+    return True
+
+
+class Interaction:
+    def __init__(self, player, sprites, drawing):
+        self.player = player
+        self.sprites = sprites
+        self.drawing = drawing
+
+    def intersection_object(self):
+        if self.player.shot and self.drawing.shot_animation_trigger:
+            for obj in sorted(self.sprites.list_of_objects, key=lambda x: x.distance_to_sprite):
+                if obj.is_on_fire[1]:
+                    if obj.is_dead != 'immortal' and not obj.is_dead:
+                        if ray_casting_npc_player(obj.x, obj.y, world_map, self.player.pos):
+                            print(1)
+                            obj.is_dead = True
+                            obj.blocked = None
+                            self.drawing.shot_animation_trigger = False
+                    break
+
+    def npc_action(self):
+        for i in self.sprites.list_of_objects:
+            pass

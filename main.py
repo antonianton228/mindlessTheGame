@@ -7,6 +7,7 @@ from sprites import *
 import numpy as np
 from numba import njit
 from ray_casting import ray_casting_walls
+from npc_ai import Interaction
 
 pygame.init()
 sc = pygame.display.set_mode((width, height))
@@ -15,6 +16,7 @@ clock = pygame.time.Clock()
 sprites = Sprites()
 player = Player(sprites)
 drawing = Drawing(sc , player)
+interaction = Interaction(player, sprites, drawing)
 
 
 
@@ -61,6 +63,7 @@ while True:
     drawing.world(walls + [obj.object_locate(player) for obj in sprites.list_of_objects])
     drawing.fps(clock)
     drawing.player_weapon([wall_hit, sprites.sprite_hit])
+    interaction.intersection_object()
     pygame.display.flip()
     clock.tick(120)
 

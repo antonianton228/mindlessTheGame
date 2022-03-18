@@ -62,12 +62,12 @@ class Drawing():
                 self.weapon_shot_animation.rotate(-1)
                 self.shot_animation_count = 0
                 self.shot_lenght_count += 1
-                self.shot_animation_trigger = False
+                self.shot_animation_trigger = True
             if self.shot_lenght_count == self.shot_lenght:
                 self.player.shot = False
                 self.shot_lenght_count = 0
                 self.sfx_lenght_count = 0
-                self.shot_animation_trigger = True
+                self.shot_animation_trigger = False
         else:
             self.sc.blit(self.weapon_base_sprite, self.weapon_pos)
 
