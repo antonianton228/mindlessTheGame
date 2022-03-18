@@ -18,17 +18,7 @@ class Sprites:
                 'animation_speed': 10,
                 'blocked': True,
             },
-            'fire': {
-                'sprite': pygame.image.load('data/sprites/unstatic/anim/base.png').convert_alpha(),
-                'viewing_angles': None,
-                'shift': 1.8,
-                'scale': (0.4, 0.4),
-                'animation': deque(
-                    [pygame.image.load(f'data/sprites/unstatic/anim/{i}.png').convert_alpha() for i in range(12)]),
-                'animation_dist': 800,
-                'animation_speed': 10,
-                'blocked': True,
-            },
+
             'elf': {
                 'sprite': [pygame.image.load(f'data/sprites/unstatic/vert/elf/{i}.png').convert_alpha() for i in range(1, 6)],
                 'viewing_angles': True,
@@ -43,7 +33,7 @@ class Sprites:
                 'sprite': pygame.image.load('data/textures/grass.jpg').convert_alpha(),
                 'viewing_angles': None,
                 'shift': 1.8,
-                'scale': (1, 1),
+                'scale': (1, 0.6),
                 'animation': [],
                 'animation_dist': 800,
                 'animation_speed': 10,
@@ -53,7 +43,7 @@ class Sprites:
                 'sprite': pygame.image.load('data/sprites/npc/unfriendly/testsquare/default.png').convert_alpha(),
                 'viewing_angles': None,
                 'shift': 0.5,
-                'scale': (0.4, 0.4),
+                'scale': (0.6, 0.6),
                 'animation': [],
                 'death_animation': deque([pygame.image.load(f'data/sprites/npc/unfriendly/testsquare/{i}.png')] for i in range(6)),
                 'is_dead': None,
@@ -65,13 +55,32 @@ class Sprites:
                 'flag': 'npc',
                 'obj_action': [pygame.image.load('data/sprites/npc/unfriendly/testsquare/0.png')],
             },
+            'fire': {
+                'sprite': pygame.image.load('data/sprites/unstatic/anim/base.png').convert_alpha(),
+                'viewing_angles': None,
+                'shift': 0.8,
+                'scale': (1, 1),
+                'animation': deque(
+                    [pygame.image.load(f'data/sprites/unstatic/anim/{i}.png').convert_alpha() for i in range(12)]),
+                'death_animation': deque(
+                    [pygame.image.load(f'data/sprites/npc/unfriendly/testsquare/{i}.png')] for i in range(6)),
+                'is_dead': None,
+                'side': 30,
+                'dead_shift': 0.5,
+                'animation_dist': 800,
+                'animation_speed': 10,
+                'blocked': True,
+                'flag': 'decor',
+                'obj_action': [pygame.image.load('data/sprites/npc/unfriendly/testsquare/0.png')],
+            },
         }
 
         self.list_of_objects = [
             # SpriteObject(self.sprite_parameters['sprite-barrel'], (7.1, 2.1)),
             # SpriteObject(self.sprite_parameters['sprite-barrel'], (5.9, 2.1)),
-            # SpriteObject(self.sprite_parameters['fire'], (9, 4)),
+            SpriteObject(self.sprite_parameters['fire'], (9, 4)),
             SpriteObject(self.sprite_parameters['square'],  (7, 4)),
+
 
 
         ]
@@ -130,8 +139,6 @@ class SpriteObject:
 
 
     def object_locate(self, player):
-
-
         dx, dy = self.x - player.x, self.y - player.y
         self.distance_to_sprite = (dx ** 2 + dy ** 2) ** 0.5
 
@@ -150,29 +157,67 @@ class SpriteObject:
             self.proj_height = min(int(proj_coof / self.distance_to_sprite * self.scale[0]), double_height)
             sprite_width = int(self.proj_height * self.scale[0])
             sprite_height = int(self.proj_height * self.scale[1])
+            half_sprite_height = sprite_height // 2
+            half_sprite_width = sprite_width // 2
             half_proj_height = self.proj_height // 2
             shift = half_proj_height * self.shift
 
-            if self.viewing_angles:
-                if self.theta < 0:
-                    self.theta += double_pi
-                self.theta = 360 - int(math.degrees(self.theta))
-                for angles in self.sprite_angles:
-                    if self.theta in angles:
-                        self.object = self.sprite_position[angles]
-                        break
-            #anim
-            sprite_object = self.object
-            if self.animation and self.distance_to_sprite < self.animation_dist:
-                sprite_object = self.animation[0]
-                if self.animation_count < self.animation_speed:
-                    self.animation_count += 1
-                else:
-                    self.animation.rotate()
-                    self.animation_count = 0
+            if self.is_dead and self.is_dead != 'immortal':
+                sprite_object = self.dead_anim()
+                shift = half_sprite_height * self.dead_shift
+                sprite_height = int(sprite_height / 1.3)
+            elif self.npc_action_trigger:
+                sprite_object = self.npc_ai()
+            else:
+                self.object = self.visible()
+                sprite_object = self.anim()
 
-            sprite_pos = (self.current_ray * scale - half_proj_height, half_height - half_proj_height + shift)
-            sprite = pygame.transform.scale(sprite_object, (self.proj_height, self.proj_height))
+
+            #anim
+
+
+            # scaling
+            sprite_pos = (self.current_ray * scale - half_sprite_width, half_height - half_sprite_height + shift)
+            sprite = pygame.transform.scale(sprite_object, (sprite_width, sprite_height))
             return (self.distance_to_sprite, sprite, sprite_pos)
         else:
             return (False,)
+
+    def anim(self):
+        if self.animation and self.distance_to_sprite < self.animation_dist:
+            sprite_object = self.animation[0]
+            if self.animation_count < self.animation_speed:
+                self.animation_count += 1
+            else:
+                self.animation.rotate()
+                self.animation_count = 0
+            return sprite_object
+        return self.object
+
+    def visible(self):
+        if self.viewing_angles:
+            if self.theta < 0:
+                self.theta += double_pi
+            self.theta = 360 - int(math.degrees(self.theta))
+            for angles in self.sprite_angles:
+                if self.theta in angles:
+                    return self.sprite_position[angles]
+        return self.object
+
+    def dead_anim(self):
+        if len(self.death_animation):
+            if self.dead_animation_count < self.animation_speed:
+                self.dead_sprite = self.death_animation[0]
+                self.dead_animation_count += 1
+            else:
+                self.dead_sprite = self.death_animation.popleft()
+                self.dead_animation_count = 0
+        return self.dead_sprite
+
+    def npc_ai(self):
+        if self.animation_count < self.animation_speed:
+            self.animation_count += 1
+        else:
+            self.obj_action.rotate()
+            self.animation_count = 0
+        return self.obj_action
