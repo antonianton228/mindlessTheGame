@@ -63,7 +63,10 @@ while True:
     drawing.world(walls + [obj.object_locate(player) for obj in sprites.list_of_objects])
     drawing.fps(clock)
     drawing.player_weapon([wall_hit, sprites.sprite_hit])
+
     interaction.intersection_object()
+    interaction.npc_action()
+
     pygame.display.flip()
     clock.tick(120)
 

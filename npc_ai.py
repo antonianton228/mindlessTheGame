@@ -57,7 +57,6 @@ class Interaction:
                 if obj.is_on_fire[1]:
                     if obj.is_dead != 'immortal' and not obj.is_dead:
                         if ray_casting_npc_player(obj.x, obj.y, world_map, self.player.pos):
-                            print(1)
                             obj.is_dead = True
                             obj.blocked = None
                             self.drawing.shot_animation_trigger = False
@@ -65,4 +64,8 @@ class Interaction:
 
     def npc_action(self):
         for i in self.sprites.list_of_objects:
-            pass
+            if ray_casting_npc_player(i.x, i.y, world_map, self.player.pos):
+                i.npc_action_trigger = True
+            else:
+                i.npc_action_trigger = False
+

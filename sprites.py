@@ -50,10 +50,10 @@ class Sprites:
                 'side': 30,
                 'dead_shift': 0.5,
                 'animation_dist': 800,
-                'animation_speed': 10,
+                'animation_speed': 20,
                 'blocked': True,
                 'flag': 'npc',
-                'obj_action': [pygame.image.load('data/sprites/npc/unfriendly/testsquare/0.png')],
+                'obj_action': deque([pygame.image.load(f'data/sprites/npc/unfriendly/testsquare/{i}.png').convert_alpha() for i in range(2)]),
             },
             'fire': {
                 'sprite': pygame.image.load('data/sprites/unstatic/anim/base.png').convert_alpha(),
@@ -66,12 +66,12 @@ class Sprites:
                     [pygame.image.load(f'data/sprites/npc/unfriendly/testsquare/{i}.png')] for i in range(6)),
                 'is_dead': 'immortal',
                 'side': 30,
-                'dead_shift': 0.5,
+                'dead_shift': 0.8,
                 'animation_dist': 800,
-                'animation_speed': 10,
+                'animation_speed': 2,
                 'blocked': True,
                 'flag': 'decor',
-                'obj_action': [pygame.image.load('data/sprites/npc/unfriendly/testsquare/0.png')],
+                'obj_action': deque([pygame.image.load(f'data/sprites/unstatic/anim/{i}.png').convert_alpha() for i in range(16)]),
             },
         }
         self.list_of_objects = [
