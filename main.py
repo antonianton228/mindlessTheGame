@@ -11,11 +11,11 @@ from npc_ai import Interaction
 
 pygame.init()
 sc = pygame.display.set_mode((width, height))
-pygame.mouse.set_visible(False)
+
 clock = pygame.time.Clock()
 sprites = Sprites()
 player = Player(sprites)
-drawing = Drawing(sc , player)
+drawing = Drawing(sc , player, clock)
 interaction = Interaction(player, sprites, drawing)
 
 
@@ -31,22 +31,25 @@ sky = pygame.surfarray.array3d(pygame.transform.scale(sky, (100, halfvres * 2)))
 
 @njit(fastmath=True)
 def new_frame(posx, posy, rot, frame, sky, floor, hres, halfvres, mod):
-    for i in range(hres):
-        rot_i = rot + np.deg2rad(i / mod - 30)
-        sin, cos, cos2 = np.sin(rot_i), np.cos(rot_i), np.cos(np.deg2rad(i / mod - 30))
-        frame[i][:] = sky[int(np.rad2deg(rot_i) % 22)][:]
-        for j in range(200):
-            n = (halfvres / (halfvres - j)) / cos2
-            x, y = posx + cos * n, posy + sin * n
-            xx, yy = int(x * 2 % 1 * 99), int(y * 2 % 1 * 99)
-            # shade = 0.2 + 0.8 * (1 - j / halfvres)
-            # if shade > 1:
-            #     shade = 1
-            frame[i][halfvres * 2 - j - 1] = floor[xx][yy]# * shade
-
-    return frame
-
-
+    pass
+    # for i in range(hres):
+    #     rot_i = rot + np.deg2rad(i / mod - 30)
+    #     sin, cos, cos2 = np.sin(rot_i), np.cos(rot_i), np.cos(np.deg2rad(i / mod - 30))
+    #     frame[i][:] = sky[int(np.rad2deg(rot_i) % 22)][:]
+    #     for j in range(200):
+    #         n = (halfvres / (halfvres - j)) / cos2
+    #         x, y = posx + cos * n, posy + sin * n
+    #         xx, yy = int(x * 2 % 1 * 99), int(y * 2 % 1 * 99)
+    #         # shade = 0.2 + 0.8 * (1 - j / halfvres)
+    #         # if shade > 1:
+    #         #     shade = 1
+    #         frame[i][halfvres * 2 - j - 1] = floor[xx][yy]# * shade
+    #
+    # return frame
+pygame.mouse.set_visible(True)
+interaction.play_music()
+drawing.menu()
+pygame.mouse.set_visible(False)
 while True:
 
 
@@ -57,7 +60,7 @@ while True:
     drawing.floor_drow(sc)
     player.movement()
 
-    # posx, posy, rot = player.movement_floor(posx, posy, rot, pygame.key.get_pressed(), clock.tick()) # хз почему, но без этого фпс меньше
+    posx, posy, rot = player.movement_floor(posx, posy, rot, pygame.key.get_pressed(), clock.tick()) # хз почему, но без этого фпс меньше
 
     walls, wall_hit = ray_casting_walls(player, drawing.textures)
     drawing.world(walls + [obj.object_locate(player) for obj in sprites.list_of_objects])
@@ -66,6 +69,7 @@ while True:
 
     interaction.intersection_object()
     interaction.npc_action()
+    interaction.clear_objects()
 
     pygame.display.flip()
     clock.tick(120)

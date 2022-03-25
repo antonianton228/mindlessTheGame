@@ -1,3 +1,6 @@
+import random
+import sys
+
 import pygame
 from settings import *
 from ray_casting import ray_casting
@@ -8,8 +11,9 @@ from collections import deque
 
 
 class Drawing():
-    def __init__(self, sc, player):
+    def __init__(self, sc, player, clock):
         self.sc = sc
+        self.clock = clock
         self.player = player
         self.font = pygame.font.SysFont('Arial', 36, bold=True)
         self.textures = {1: pygame.image.load('data/textures/forest1.png').convert(),
@@ -18,6 +22,10 @@ class Drawing():
                          4: pygame.image.load('data/textures/forest1.png').convert(),
                          5: pygame.image.load('data/textures/sky.png').convert(),
                          6: pygame.image.load('data/textures/grass.jpg').convert()}
+        # menu
+        self.menu_trigger = True
+        self.menu_picture = pygame.image.load('data/menu/test.jpg').convert()
+
 
         # weapens
         self.weapon_base_sprite = pygame.image.load('data/sprites/weapons/shotgun/default.png')
@@ -30,6 +38,7 @@ class Drawing():
         self.shot_lenght_count = 0
         self.shot_animation_speed = 1
         self.shot_animation_count = 0
+        self.shot_sound = pygame.mixer.Sound('data/sounds/weapon/shotgun/shot1.mp3')
         self.shot_animation_trigger = True
 
         self.sfx = deque([pygame.image.load(f'data/sprites/sfx/shotgun/{i}.png').convert_alpha() for i in range(9)])
@@ -53,6 +62,9 @@ class Drawing():
 
     def player_weapon(self, shots):
         if self.player.shot:
+            if not self.shot_lenght_count:
+                self.shot_sound.set_volume(0.2)
+                self.shot_sound.play()
             self.shot_proj = min(shots)[1] // 2
             self.bullet_sfx()
             shot_sprite = self.weapon_shot_animation[0]
@@ -86,3 +98,35 @@ class Drawing():
     def floor_drow(self, sc):
         pygame.draw.rect(sc, skyblue, (0, 0, 1200, 400))
         pygame.draw.rect(sc, grassgreen, (0, 400, 1200, 800))
+
+
+    def menu(self):
+        x = 0
+        button_font = pygame.font.Font('data/font/font.ttf', 72)
+        label_font = pygame.font.Font('data/font/font1.otf', 300)
+        start = button_font.render('START', 1, pygame.Color('lightgray'))
+        button_start = pygame.Rect(0, 0, 400, 150)
+        button_start.center = half_width, half_height
+        exit = button_font.render('EXIT', 1, pygame.Color('lightgray'))
+        button_exit = pygame.Rect(0, 0, 400, 150)
+        button_exit.center = half_width, half_height + 200
+
+        while self.menu_trigger:
+            for i in pygame.event.get():
+                if i.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+            self.sc.blit(self.menu_picture, (0, 0), (x % width, half_height, width, height))
+
+            pygame.draw.rect(self.sc, black, button_start, border_radius=25, width=10)
+            self.sc.blit(start, (button_start.centerx - 130, button_start. centery - 70))
+
+            pygame.draw.rect(self.sc, black, button_exit, border_radius=25, width=10)
+            self.sc.blit(exit, (button_exit.centerx - 130, button_exit.centery - 70))
+
+            color = random.randrange(40)
+            label = label_font.render('MindLess', 1, (color, color, color))
+            self.sc.blit(label, (15, -30))
+
+            pygame.display.flip()
+            self.clock.tick(20)

@@ -64,8 +64,28 @@ class Interaction:
 
     def npc_action(self):
         for i in self.sprites.list_of_objects:
-            if ray_casting_npc_player(i.x, i.y, world_map, self.player.pos):
-                i.npc_action_trigger = True
-            else:
-                i.npc_action_trigger = False
+            if i.flag == 'npc' and not i.is_dead:
+                if ray_casting_npc_player(i.x, i.y, world_map, self.player.pos):
+                    i.npc_action_trigger = True
+                    self.npc_moving(i)
+                else:
+                    i.npc_action_trigger = False
 
+
+    def npc_moving(self, obj):
+        if obj.distance_to_sprite > tile:
+            dx = obj.x - self.player.pos[0]
+            dy = obj.y - self.player.pos[1]
+            obj.x = obj.x + 1 if dx < 0 else obj.x - 1
+            obj.y = obj.y + 1 if dy < 0 else obj.y - 1
+
+    def clear_objects(self):
+        deleted_objects = self.sprites.list_of_objects[:]
+        [self.sprites.list_of_objects.remove(obj) for obj in deleted_objects if obj.delete]
+
+    def play_music(self):
+        pygame.mixer.pre_init(44100, -16, 2, 2048)
+        pygame.mixer.init()
+        pygame.mixer.music.load('data/sounds/test_music/VasyaSong.mp3')
+        pygame.mixer.music.set_volume(0.07)
+        pygame.mixer.music.play(10)

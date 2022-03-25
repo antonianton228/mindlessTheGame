@@ -47,7 +47,7 @@ class Sprites:
                 'animation': [],
                 'death_animation': deque([pygame.image.load(f'data/sprites/npc/unfriendly/testsquare/{i}.png')] for i in range(6)),
                 'is_dead': None,
-                'side': 30,
+                'side': 40,
                 'dead_shift': 0.5,
                 'animation_dist': 800,
                 'animation_speed': 20,
@@ -211,6 +211,8 @@ class SpriteObject:
             else:
                 self.dead_sprite = self.death_animation.popleft()
                 self.dead_animation_count = 0
+        else:
+            self.delete = True
         return self.dead_sprite
 
     def npc_ai(self):
