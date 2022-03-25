@@ -1,10 +1,10 @@
 import pygame
 from settings import *
-import maps
+from maps import world_map, world_width, world_height
 from numba import njit
 import numpy as np
 
-world_map, world_width, world_height = maps.map_call()[1], maps.map_call()[2], maps.map_call()[3]
+
 
 @njit(fastmath=True)
 def mapping(a, b):

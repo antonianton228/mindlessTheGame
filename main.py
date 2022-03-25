@@ -1,7 +1,7 @@
 import pygame
 from playerclass import Player
 from settings import *
-from maps import world_map
+import maps
 from drawingclass import Drawing
 from sprites import *
 import numpy as np
@@ -9,6 +9,9 @@ from numba import njit
 from ray_casting import ray_casting_walls
 from npc_ai import Interaction
 import storyteller
+
+
+
 
 pygame.init()
 sc = pygame.display.set_mode((width, height))
@@ -53,26 +56,25 @@ pygame.mouse.set_visible(False)
 interaction.play_music()
 while True:
 
+    world_map = maps.map_call()[1]
+    flagloop = True
+    while flagloop:
+        drawing.floor_drow(sc)
+        player.movement()
+        posx, posy, rot = player.movement_floor(posx, posy, rot, pygame.key.get_pressed(), clock.tick()) # хз почему, но без этого фпс меньше
 
-    # frame = new_frame(posx, posy, rot, frame, sky, floor, hres, halfvres, mod)
-    # surf = pygame.surfarray.make_surface(frame * 255)
-    # surf = pygame.transform.scale(surf, (1200, 800))
-    # # sc.blit(surf, (0, 0))
-    drawing.floor_drow(sc)
-    player.movement()
-    posx, posy, rot = player.movement_floor(posx, posy, rot, pygame.key.get_pressed(), clock.tick()) # хз почему, но без этого фпс меньше
+        walls, wall_hit = ray_casting_walls(player, drawing.textures)
+        drawing.world(walls + [obj.object_locate(player) for obj in sprites.list_of_objects])
+        drawing.fps(clock)
+        drawing.player_weapon([wall_hit, sprites.sprite_hit])
 
-    walls, wall_hit = ray_casting_walls(player, drawing.textures)
-    drawing.world(walls + [obj.object_locate(player) for obj in sprites.list_of_objects])
-    drawing.fps(clock)
-    drawing.player_weapon([wall_hit, sprites.sprite_hit])
-
-    interaction.intersection_object()
-    interaction.npc_action()
-    interaction.clear_objects()
-
-    pygame.display.flip()
-    clock.tick(120)
+        interaction.intersection_object()
+        interaction.npc_action()
+        interaction.clear_objects()
+        if not flagloop:
+            break
+        pygame.display.flip()
+        clock.tick(120)
 
 
 

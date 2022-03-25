@@ -1,9 +1,11 @@
 from settings import *
-from maps import world_map
+import maps
 from ray_casting import mapping
 import math
 import pygame
 from numba import njit
+
+world_map = maps.map_call()[1]
 
 @njit(fastmath=True, cache=True)
 def ray_casting_npc_player(npc_x, npc_y, world_map, player_pos):

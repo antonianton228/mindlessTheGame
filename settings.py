@@ -1,7 +1,7 @@
 import math
 import numpy as np
 import pygame
-from storyteller import *
+import storyteller
 
 # game settings
 width = 1200
@@ -60,4 +60,4 @@ grassgreen = (48, 156, 98)
 rot = 0
 
 # SAVE
-level = get_level()
+level = storyteller.get_level()

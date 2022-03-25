@@ -1,8 +1,10 @@
 import math
 from settings import *
 import pygame
-from maps import collision_walls
+import maps
+from storyteller import change_level
 
+collision_walls = maps.map_call()[0]
 
 class Player:
     def __init__(self, sprites):
@@ -19,15 +21,23 @@ class Player:
         # weapon
         self.shot = False
 
+        self.checkpoint_dict = {0: [range(125, 175), range(15, 90), 1],
+                                1: [range(1251, 1751), range(15, 90), 2],
+                                2: [range(1251, 1751), range(15, 90), 3],
+                                } # [2] - след. уровень
+
 
 
 
     @property
     def pos(self):
+        if int(self.y) in self.checkpoint_dict[level][0] and int(self.x) in self.checkpoint_dict[level][1]:
+            change_level(self.checkpoint_dict[level][2], self)
+            self.x, self.y = 150, 350
         return self.x, self.y
 
     def collision_list(self):
-        return  collision_walls + [pygame.Rect(*obj.pos, obj.side, obj.side) for obj in
+        return maps.map_call()[0] + [pygame.Rect(*obj.pos, obj.side, obj.side) for obj in
                                   self.sprites.list_of_objects if obj.blocked]
 
 
