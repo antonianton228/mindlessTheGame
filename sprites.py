@@ -74,15 +74,16 @@ class Sprites:
                 'obj_action': deque([pygame.image.load(f'data/sprites/unstatic/anim/{i}.png').convert_alpha() for i in range(16)]),
             },
         }
-        self.list_of_objects = [
-            # SpriteObject(self.sprite_parameters['sprite-barrel'], (7.1, 2.1)),
-            # SpriteObject(self.sprite_parameters['sprite-barrel'], (5.9, 2.1)),
-            SpriteObject(self.sprite_parameters['fire'], (9, 4)),
-            SpriteObject(self.sprite_parameters['square'],  (7, 4)),
 
-
-
-        ]
+        self.dict_of_objects = {
+            0: [SpriteObject(self.sprite_parameters['fire'], (9, 4)),
+                SpriteObject(self.sprite_parameters['square'], (7, 4)),],
+            1: [SpriteObject(self.sprite_parameters['fire'], (1, 1)),
+                SpriteObject(self.sprite_parameters['square'], (3, 3)), ],
+            2: [SpriteObject(self.sprite_parameters['fire'], (2, 3)),
+                SpriteObject(self.sprite_parameters['square'], (5, 1)), ],
+        }
+        self.list_of_objects = self.dict_of_objects[level]
         # for i in :
         #     list_of_objects.append(SpriteObject(self.sprite_parameters['sprite-barrel'],  (i[0] // 100, i[1] // 100)))
     @property

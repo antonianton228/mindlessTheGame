@@ -8,6 +8,7 @@ import numpy as np
 from numba import njit
 from ray_casting import ray_casting_walls
 from npc_ai import Interaction
+import storyteller
 
 pygame.init()
 sc = pygame.display.set_mode((width, height))
@@ -47,9 +48,9 @@ def new_frame(posx, posy, rot, frame, sky, floor, hres, halfvres, mod):
     #
     # return frame
 pygame.mouse.set_visible(True)
-interaction.play_music()
 drawing.menu()
 pygame.mouse.set_visible(False)
+interaction.play_music()
 while True:
 
 
@@ -59,7 +60,6 @@ while True:
     # # sc.blit(surf, (0, 0))
     drawing.floor_drow(sc)
     player.movement()
-
     posx, posy, rot = player.movement_floor(posx, posy, rot, pygame.key.get_pressed(), clock.tick()) # хз почему, но без этого фпс меньше
 
     walls, wall_hit = ray_casting_walls(player, drawing.textures)

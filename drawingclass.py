@@ -7,9 +7,6 @@ from ray_casting import ray_casting
 from collections import deque
 
 
-
-
-
 class Drawing():
     def __init__(self, sc, player, clock):
         self.sc = sc
@@ -25,7 +22,6 @@ class Drawing():
         # menu
         self.menu_trigger = True
         self.menu_picture = pygame.image.load('data/menu/test.jpg').convert()
-
 
         # weapens
         self.weapon_base_sprite = pygame.image.load('data/sprites/weapons/shotgun/default.png')
@@ -45,20 +41,16 @@ class Drawing():
         self.sfx_lenght_count = 0
         self.sfx_lenght = len(self.sfx)
 
-
-
-
     def world(self, world_objects):
-         for obj in sorted(world_objects, key=lambda x: x[0], reverse=True):
-             if obj[0]:
-                 _, object, object_pos = obj
-                 self.sc.blit(object, object_pos)
+        for obj in sorted(world_objects, key=lambda x: x[0], reverse=True):
+            if obj[0]:
+                _, object, object_pos = obj
+                self.sc.blit(object, object_pos)
 
     def fps(self, clock):
         display_fps = str(int(clock.get_fps()))
         render = self.font.render(display_fps, 0, red)
-        self.sc.blit(render,(width - 65, 5))
-
+        self.sc.blit(render, (width - 65, 5))
 
     def player_weapon(self, shots):
         if self.player.shot:
@@ -83,7 +75,6 @@ class Drawing():
         else:
             self.sc.blit(self.weapon_base_sprite, self.weapon_pos)
 
-
     def bullet_sfx(self):
         if self.sfx_lenght_count < self.sfx_lenght:
             sfx = pygame.transform.scale(self.sfx[0],
@@ -94,11 +85,9 @@ class Drawing():
             self.sfx_lenght_count += 1
             self.sfx.rotate(-1)
 
-
     def floor_drow(self, sc):
         pygame.draw.rect(sc, skyblue, (0, 0, 1200, 400))
         pygame.draw.rect(sc, grassgreen, (0, 400, 1200, 800))
-
 
     def menu(self):
         x = 0
@@ -119,7 +108,7 @@ class Drawing():
             self.sc.blit(self.menu_picture, (0, 0), (x % width, half_height, width, height))
 
             pygame.draw.rect(self.sc, black, button_start, border_radius=25, width=10)
-            self.sc.blit(start, (button_start.centerx - 130, button_start. centery - 70))
+            self.sc.blit(start, (button_start.centerx - 130, button_start.centery - 70))
 
             pygame.draw.rect(self.sc, black, button_exit, border_radius=25, width=10)
             self.sc.blit(exit, (button_exit.centerx - 130, button_exit.centery - 70))
@@ -128,5 +117,19 @@ class Drawing():
             label = label_font.render('MindLess', 1, (color, color, color))
             self.sc.blit(label, (15, -30))
 
+            mouse_pos = pygame.mouse.get_pos()
+            mouse_click = pygame.mouse.get_pressed()
+            if button_start.collidepoint(mouse_pos):
+                pygame.draw.rect(self.sc, black, button_start, border_radius=25)
+                self.sc.blit(start, (button_start.centerx - 130, button_start.centery - 70))
+                if mouse_click[0]:
+                    self.menu_trigger = False
+            elif button_exit.collidepoint(mouse_pos):
+                pygame.draw.rect(self.sc, black, button_exit, border_radius=25)
+                self.sc.blit(exit, (button_exit.centerx - 130, button_exit.centery - 70))
+                if mouse_click[0]:
+                    pygame.quit()
+                    sys.exit()
+
             pygame.display.flip()
-            self.clock.tick(20)
+            self.clock.tick(100)
