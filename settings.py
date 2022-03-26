@@ -61,3 +61,5 @@ rot = 0
 
 # SAVE
 level = storyteller.get_level()
+weapon_in_hand = 1
+weapon_in_hand_trigger = False

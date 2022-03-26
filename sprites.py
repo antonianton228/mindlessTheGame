@@ -83,7 +83,7 @@ class Sprites:
             2: [SpriteObject(self.sprite_parameters['fire'], (2, 3)),
                 SpriteObject(self.sprite_parameters['square'], (5, 1)), ],
         }
-        self.list_of_objects = self.dict_of_objects[level]
+
         # for i in :
         #     list_of_objects.append(SpriteObject(self.sprite_parameters['sprite-barrel'],  (i[0] // 100, i[1] // 100)))
     @property

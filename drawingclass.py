@@ -2,9 +2,12 @@ import random
 import sys
 
 import pygame
+
+import settings
 from settings import *
 from ray_casting import ray_casting
 from collections import deque
+from weaponClass import Weapon
 
 
 class Drawing():
@@ -24,22 +27,49 @@ class Drawing():
         self.menu_picture = pygame.image.load('data/menu/test.jpg').convert()
 
         # weapens
-        self.weapon_base_sprite = pygame.image.load('data/sprites/weapons/shotgun/default.png')
-        self.weapon_shot_animation = deque([pygame.image.load(f'data/sprites/weapons/shotgun/{i}.png').convert_alpha()
-                                            for i in range(20)])
-        self.weapon_rect = self.weapon_base_sprite.get_rect()
-        self.weapon_pos = (half_width - self.weapon_rect.width // 2, height
-                           - self.weapon_rect.height)
-        self.shot_lenght = len(self.weapon_shot_animation)
-        self.shot_lenght_count = 0
-        self.shot_animation_speed = 1
-        self.shot_animation_count = 0
-        self.shot_sound = pygame.mixer.Sound('data/sounds/weapon/shotgun/shot1.mp3')
-        self.shot_animation_trigger = True
+        self.weapon_dict = {
+            1: Weapon(pygame.image.load('data/sprites/weapons/shotgun/default.png'), 'shotgun',
+                      pygame.image.load('data/sprites/weapons/shotgun/default.png'),
+                      deque([pygame.image.load(f'data/sprites/weapons/shotgun/{i}.png').convert_alpha()
+                             for i in range(20)]), pygame.mixer.Sound('data/sounds/weapon/shotgun/shot1.mp3'), 10, 10,
+                      deque([pygame.image.load(f'data/sprites/sfx/shotgun/{i}.png').convert_alpha() for i in range(9)]), 1),
+            2: Weapon(pygame.image.load('data/sprites/weapons/pistol/default.png'), 'pistol',
+                      pygame.image.load('data/sprites/weapons/pistol/default.png'),
+                      deque([pygame.image.load(f'data/sprites/weapons/pistol/{i}.png').convert_alpha()
+                             for i in range(5)]), pygame.mixer.Sound('data/sounds/weapon/pistol/shot1.mp3'), 10, 10,
+                      deque([pygame.image.load(f'data/sprites/sfx/shotgun/{i}.png').convert_alpha() for i in range(9)]), 1)
 
-        self.sfx = deque([pygame.image.load(f'data/sprites/sfx/shotgun/{i}.png').convert_alpha() for i in range(9)])
-        self.sfx_lenght_count = 0
-        self.sfx_lenght = len(self.sfx)
+        }
+        self.weapon_base_sprite = self.weapon_dict[1].weapon_sprite
+        self.weapon_shot_animation = self.weapon_dict[1].weapon_animation
+        self.weapon_rect = self.weapon_dict[1].weapon_rect
+        self.weapon_pos = self.weapon_dict[1].weapon_pos
+        self.shot_lenght = self.weapon_dict[1].shot_lenght
+        self.shot_lenght_count = self.weapon_dict[1].shot_lenght_count
+        self.shot_animation_speed = self.weapon_dict[1].shot_animation_speed
+        self.shot_animation_count = self.weapon_dict[1].shot_animation_count
+        self.shot_sound = self.weapon_dict[1].weapon_sound
+        self.shot_animation_trigger = self.weapon_dict[1].shot_animation_trigger
+
+        self.sfx = self.weapon_dict[1].sfx
+        self.sfx_lenght_count = self.weapon_dict[1].sfx_lenght_count
+        self.sfx_lenght = self.weapon_dict[1].sfx_lenght
+
+
+    def weapon_draw(self, n):
+        self.weapon_base_sprite = self.weapon_dict[n].weapon_sprite
+        self.weapon_shot_animation = self.weapon_dict[n].weapon_animation
+        self.weapon_rect = self.weapon_dict[n].weapon_rect
+        self.weapon_pos = self.weapon_dict[n].weapon_pos
+        self.shot_lenght = self.weapon_dict[n].shot_lenght
+        self.shot_lenght_count = self.weapon_dict[n].shot_lenght_count
+        self.shot_animation_speed = self.weapon_dict[n].shot_animation_speed
+        self.shot_animation_count = self.weapon_dict[n].shot_animation_count
+        self.shot_sound = self.weapon_dict[n].weapon_sound
+        self.shot_animation_trigger = self.weapon_dict[n].shot_animation_trigger
+        self.sfx = self.weapon_dict[n].sfx
+        self.sfx_lenght_count = self.weapon_dict[n].sfx_lenght_count
+        self.sfx_lenght = self.weapon_dict[n].sfx_lenght
 
     def world(self, world_objects):
         for obj in sorted(world_objects, key=lambda x: x[0], reverse=True):
@@ -53,6 +83,10 @@ class Drawing():
         self.sc.blit(render, (width - 65, 5))
 
     def player_weapon(self, shots):
+        if settings.weapon_in_hand_trigger:
+            self.weapon_draw(settings.weapon_in_hand)
+            print(settings.weapon_in_hand)
+        settings.weapon_in_hand_trigger = False
         if self.player.shot:
             if not self.shot_lenght_count:
                 self.shot_sound.set_volume(0.2)

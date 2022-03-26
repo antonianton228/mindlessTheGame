@@ -3,6 +3,7 @@ from settings import *
 import pygame
 import maps
 from storyteller import change_level
+import settings
 
 collision_walls = maps.map_call()[0]
 
@@ -109,6 +110,14 @@ class Player:
             dx = -player_speed * sin_a
             dy = player_speed * cos_a
             self.detect_collision(dx, dy)
+        if keys[pygame.K_1]:
+            if settings.weapon_in_hand != 1:
+                settings.weapon_in_hand = 1
+                settings.weapon_in_hand_trigger = True
+        if keys[pygame.K_2]:
+            if settings.weapon_in_hand != 2:
+                settings.weapon_in_hand = 2
+                settings.weapon_in_hand_trigger = True
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 exit()

@@ -7,11 +7,12 @@ from numba import njit
 
 world_map = maps.map_call()[1]
 
+
 @njit(fastmath=True, cache=True)
 def ray_casting_npc_player(npc_x, npc_y, world_map, player_pos):
     ox, oy = player_pos
     xm, ym = mapping(ox, oy)
-    d_x, d_y = ox - npc_x, oy-npc_y
+    d_x, d_y = ox - npc_x, oy - npc_y
     cur_angle = math.atan2(d_y, d_x) + math.pi
 
     sin_a = math.sin(cur_angle)
@@ -59,6 +60,7 @@ class Interaction:
                 if obj.is_on_fire[1]:
                     if obj.is_dead != 'immortal' and not obj.is_dead:
                         if ray_casting_npc_player(obj.x, obj.y, world_map, self.player.pos):
+
                             obj.is_dead = True
                             obj.blocked = None
                             self.drawing.shot_animation_trigger = False
@@ -72,7 +74,6 @@ class Interaction:
                     self.npc_moving(i)
                 else:
                     i.npc_action_trigger = False
-
 
     def npc_moving(self, obj):
         if obj.distance_to_sprite > tile:

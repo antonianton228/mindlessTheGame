@@ -7,7 +7,6 @@ from numba.typed import Dict
 from numba import int32
 from storyteller import get_level
 
-
 _ = False
 
 mapsdict = {
@@ -62,6 +61,7 @@ mapsdict = {
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
 
 }
+
 
 def map_call():
     matrix_map = mapsdict[get_level()]
