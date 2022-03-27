@@ -1,4 +1,6 @@
 import pygame
+
+import settings
 from playerclass import Player
 from settings import *
 import maps
@@ -56,7 +58,12 @@ while True:
 
         interaction.intersection_object()
         interaction.npc_action()
+        interaction.acting_object()
         interaction.clear_objects()
+        if settings.dialog_draw:
+            drawing.dialoge_draw()
+            settings.dialog_draw = False
+
         if not flagloop:
             break
         pygame.display.flip()

@@ -40,6 +40,7 @@ class Sprites:
                 'blocked': True,
             },
             'square': {
+                'name': 'square',
                 'sprite': pygame.image.load('data/sprites/npc/unfriendly/testsquare/default.png').convert_alpha(),
                 'viewing_angles': None,
                 'shift': 0.5,
@@ -54,14 +55,16 @@ class Sprites:
                 'blocked': True,
                 'flag': 'npc',
                 'obj_action': deque([pygame.image.load(f'data/sprites/npc/unfriendly/testsquare/{i}.png').convert_alpha() for i in range(2)]),
+                'is_acting': True
             },
             'fire': {
-                'sprite': pygame.image.load('data/sprites/unstatic/anim/base.png').convert_alpha(),
-                'viewing_angles': None,
+                'name': 'fire',
+                'sprite':  pygame.image.load('data/sprites/unstatic/anim/base.png').convert_alpha(), # Всегда делать 8 текстурок, если меньше, то крашится
+                'viewing_angles': False,
                 'shift': 0.8,
                 'scale': (1, 1),
                 'animation': deque(
-                    [pygame.image.load(f'data/sprites/unstatic/anim/{i}.png').convert_alpha() for i in range(12)]),
+                     [pygame.image.load(f'data/sprites/unstatic/anim/{i}.png').convert_alpha() for i in range(12)]),
                 'death_animation': deque(
                     [pygame.image.load(f'data/sprites/npc/unfriendly/testsquare/{i}.png')] for i in range(6)),
                 'is_dead': 'immortal',
@@ -72,14 +75,14 @@ class Sprites:
                 'blocked': True,
                 'flag': 'decor',
                 'obj_action': deque([pygame.image.load(f'data/sprites/unstatic/anim/{i}.png').convert_alpha() for i in range(16)]),
+                'is_acting': True
             },
         }
 
         self.dict_of_objects = {
             0: [SpriteObject(self.sprite_parameters['fire'], (9, 4)),
                 SpriteObject(self.sprite_parameters['square'], (7, 4)),],
-            1: [SpriteObject(self.sprite_parameters['fire'], (1, 1)),
-                SpriteObject(self.sprite_parameters['square'], (3, 3)), ],
+            1: [SpriteObject(self.sprite_parameters['square'], (1, 1)),],
             2: [SpriteObject(self.sprite_parameters['fire'], (2, 3)),
                 SpriteObject(self.sprite_parameters['square'], (5, 1)), ],
         }
@@ -94,6 +97,7 @@ class Sprites:
 
 class SpriteObject:
     def __init__(self, parameters, pos):
+        self.name = parameters['name']
         self.object = parameters['sprite'].copy()
         self.viewing_angles = parameters['viewing_angles']
         self.shift = parameters['shift']
@@ -112,16 +116,21 @@ class SpriteObject:
         self.x, self.y = pos[0] * tile, pos[1] * tile
         self.side = parameters['side']
         self.dead_animation_count = 0
+        self.is_acting = parameters['is_acting']
         self.animation_count = 0
         self.npc_action_trigger = False
         self.door_open_trigger = False
         self.door_prev_pos = self.y if self.flag == 'door_h' else self.x
         self.delete = False
         if self.viewing_angles:
-            if len(self.object) == 0:
+            if len(self.object) == 8:
                 self.sprite_angles = [frozenset(range(338, 361)) | frozenset(range(0, 23))] + \
-                    [frozenset(range(i, i + 72)) for i in range(0, 360, 72)]
+                    [frozenset(range(i, i + 45)) for i in range(23, 338, 45)]
+            else:
+                self.sprite_angles = [frozenset(range(348, 361)) | frozenset(range(0, 11))] + \
+                                     [frozenset(range(i, i + 23)) for i in range(11, 348, 23)]
             self.sprite_position = {angle: pos for angle, pos in zip(self.sprite_angles, self.object)}
+
 
 
 

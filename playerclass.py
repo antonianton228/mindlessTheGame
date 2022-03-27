@@ -21,6 +21,8 @@ class Player:
         self.flag = True  # это кринж но подругому не сделать
         # weapon
         self.shot = False
+        # взаимодействие
+        self.action = False
 
         self.checkpoint_dict = {0: [range(125, 175), range(15, 90), 1],
                                 1: [range(1251, 1751), range(15, 90), 2],
@@ -124,6 +126,8 @@ class Player:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1 and not self.shot:
                     self.shot = True
+        if keys[pygame.K_e] and not self.action:
+            self.action = True
 
         return self.x, self.y, self.angle
 

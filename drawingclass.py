@@ -12,6 +12,7 @@ from weaponClass import Weapon
 #gggg
 class Drawing():
     def __init__(self, sc, player, clock):
+
         self.sc = sc
         self.clock = clock
         self.player = player
@@ -55,6 +56,25 @@ class Drawing():
         self.sfx_lenght_count = self.weapon_dict[1].sfx_lenght_count
         self.sfx_lenght = self.weapon_dict[1].sfx_lenght
 
+    def dialoge_draw(self):
+        bt1 = Button('Hello', 200, 50, 100, 50)
+        pygame.mouse.set_visible(True)
+        dialog_trigger = True
+        while dialog_trigger:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    dialog_trigger = False
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        dialog_trigger = False
+                if bt1.handle_event(event):
+                    dialog_trigger = False
+                bt1.update()
+                self.sc.fill(black)
+                bt1.draw(self.sc)
+                pygame.display.update()
+                self.clock.tick(25)
+        pygame.mouse.set_visible(False)
 
     def weapon_draw(self, n):
         self.weapon_base_sprite = self.weapon_dict[n].weapon_sprite
@@ -167,3 +187,55 @@ class Drawing():
 
             pygame.display.flip()
             self.clock.tick(100)
+
+
+class Button():
+
+    def __init__(self, text, x, y, width, height, command=None):
+
+        self.text = text
+        self.command = command
+
+        self.image_normal = pygame.Surface((width, height))
+        self.image_normal.fill(green)
+
+        self.image_hovered = pygame.Surface((width, height))
+        self.image_hovered.fill(red)
+
+        self.image = self.image_normal
+        self.rect = self.image.get_rect()
+
+        font = pygame.font.Font('freesansbold.ttf', 15)
+
+        text_image = font.render(text, True, white)
+        text_rect = text_image.get_rect(center=self.rect.center)
+
+        self.image_normal.blit(text_image, text_rect)
+        self.image_hovered.blit(text_image, text_rect)
+
+        # you can't use it before `blit`
+        self.rect.topleft = (x, y)
+
+        self.hovered = False
+        # self.clicked = False
+
+    def update(self):
+
+        if self.hovered:
+            self.image = self.image_hovered
+        else:
+            self.image = self.image_normal
+
+    def draw(self, surface):
+
+        surface.blit(self.image, self.rect)
+
+    def handle_event(self, event):
+
+        if event.type == pygame.MOUSEMOTION:
+            self.hovered = self.rect.collidepoint(event.pos)
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            if self.hovered:
+                return True
+                # if self.command:
+                #     self.command()

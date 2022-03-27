@@ -4,6 +4,8 @@ from ray_casting import mapping
 import math
 import pygame
 from numba import njit
+import settings
+import drawingclass
 
 world_map = maps.map_call()[1]
 
@@ -60,11 +62,18 @@ class Interaction:
                 if obj.is_on_fire[1]:
                     if obj.is_dead != 'immortal' and not obj.is_dead:
                         if ray_casting_npc_player(obj.x, obj.y, world_map, self.player.pos):
-
                             obj.is_dead = True
                             obj.blocked = None
                             self.drawing.shot_animation_trigger = False
                     break
+    def acting_object(self):
+        if self.player.action:
+            for obj in sorted(self.sprites.list_of_objects, key=lambda x: x.distance_to_sprite):
+                if obj.is_on_fire[1]:
+                    if obj.is_acting:
+                        if ray_casting_npc_player(obj.x, obj.y, world_map, self.player.pos):
+                            self.player.action = False
+                            settings.dialog_draw = True
 
     def npc_action(self):
         for i in self.sprites.list_of_objects:
@@ -92,3 +101,5 @@ class Interaction:
         pygame.mixer.music.load('data/sounds/test_music/VasyaSong.mp3')
         pygame.mixer.music.set_volume(0.07)
         pygame.mixer.music.play(10)
+
+
