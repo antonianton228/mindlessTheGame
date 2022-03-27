@@ -62,9 +62,13 @@ class Interaction:
                 if obj.is_on_fire[1]:
                     if obj.is_dead != 'immortal' and not obj.is_dead:
                         if ray_casting_npc_player(obj.x, obj.y, world_map, self.player.pos):
-                            obj.is_dead = True
-                            obj.blocked = None
+                            obj.health -= storyteller.weapon_damage
+                            print(obj.health)
+                            if obj.health <= 0:
+                                obj.is_dead = True
+                                obj.blocked = None
                             self.drawing.shot_animation_trigger = False
+                            break
                     break
     def acting_object(self):
         if self.player.action:
@@ -72,6 +76,7 @@ class Interaction:
                 if obj.is_on_fire[1]:
                     if obj.is_acting:
                         if ray_casting_npc_player(obj.x, obj.y, world_map, self.player.pos):
+                            storyteller.dialog_person = obj.name
                             self.player.action = False
                             settings.dialog_draw = True
 

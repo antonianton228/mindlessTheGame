@@ -32,16 +32,17 @@ class Drawing():
             1: Weapon(pygame.image.load('data/sprites/weapons/shotgun/default.png'), 'shotgun',
                       pygame.image.load('data/sprites/weapons/shotgun/default.png'),
                       deque([pygame.image.load(f'data/sprites/weapons/shotgun/{i}.png').convert_alpha()
-                             for i in range(20)]), pygame.mixer.Sound('data/sounds/weapon/shotgun/shot1.mp3'), 10, 10,
+                             for i in range(20)]), pygame.mixer.Sound('data/sounds/weapon/shotgun/shot1.mp3'), 5, 10,
                       deque([pygame.image.load(f'data/sprites/sfx/shotgun/{i}.png').convert_alpha() for i in range(9)]), 1),
             2: Weapon(pygame.image.load('data/sprites/weapons/pistol/default.png'), 'pistol',
                       pygame.image.load('data/sprites/weapons/pistol/default.png'),
                       deque([pygame.image.load(f'data/sprites/weapons/pistol/{i}.png').convert_alpha()
-                             for i in range(5)]), pygame.mixer.Sound('data/sounds/weapon/pistol/shot1.mp3'), 10, 10,
+                             for i in range(5)]), pygame.mixer.Sound('data/sounds/weapon/pistol/shot1.mp3'), 1, 10,
                       deque([pygame.image.load(f'data/sprites/sfx/shotgun/{i}.png').convert_alpha() for i in range(9)]), 1)
 
         }
         self.weapon_base_sprite = self.weapon_dict[1].weapon_sprite
+        self.weapon_damage = self.weapon_dict[1].weapon_damage
         self.weapon_shot_animation = self.weapon_dict[1].weapon_animation
         self.weapon_rect = self.weapon_dict[1].weapon_rect
         self.weapon_pos = self.weapon_dict[1].weapon_pos
@@ -51,13 +52,15 @@ class Drawing():
         self.shot_animation_count = self.weapon_dict[1].shot_animation_count
         self.shot_sound = self.weapon_dict[1].weapon_sound
         self.shot_animation_trigger = self.weapon_dict[1].shot_animation_trigger
-
+        storyteller.weapon_damage = self.weapon_damage
         self.sfx = self.weapon_dict[1].sfx
         self.sfx_lenght_count = self.weapon_dict[1].sfx_lenght_count
         self.sfx_lenght = self.weapon_dict[1].sfx_lenght
 
     def dialoge_draw(self):
-        bt1 = Button('Hello', 200, 50, 100, 50)
+        name_of_speaker = storyteller.dialog_person
+        render = self.font.render(name_of_speaker, 0, red)
+        bt1 = Button('До свидания', 300, 300, 500, 300)
         pygame.mouse.set_visible(True)
         dialog_trigger = True
         while dialog_trigger:
@@ -72,6 +75,7 @@ class Drawing():
                 bt1.update()
                 self.sc.fill(black)
                 bt1.draw(self.sc)
+                self.sc.blit(render, (60, 60))
                 pygame.display.update()
                 self.clock.tick(25)
         pygame.mouse.set_visible(False)
@@ -82,6 +86,8 @@ class Drawing():
         self.weapon_rect = self.weapon_dict[n].weapon_rect
         self.weapon_pos = self.weapon_dict[n].weapon_pos
         self.shot_lenght = self.weapon_dict[n].shot_lenght
+        self.weapon_damage = self.weapon_dict[n].weapon_damage
+        storyteller.weapon_damage = self.weapon_damage
         self.shot_lenght_count = self.weapon_dict[n].shot_lenght_count
         self.shot_animation_speed = self.weapon_dict[n].shot_animation_speed
         self.shot_animation_count = self.weapon_dict[n].shot_animation_count

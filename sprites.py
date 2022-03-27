@@ -55,7 +55,8 @@ class Sprites:
                 'blocked': True,
                 'flag': 'npc',
                 'obj_action': deque([pygame.image.load(f'data/sprites/npc/unfriendly/testsquare/{i}.png').convert_alpha() for i in range(2)]),
-                'is_acting': True
+                'is_acting': True,
+                'health': 100
             },
             'fire': {
                 'name': 'fire',
@@ -75,7 +76,8 @@ class Sprites:
                 'blocked': True,
                 'flag': 'decor',
                 'obj_action': deque([pygame.image.load(f'data/sprites/unstatic/anim/{i}.png').convert_alpha() for i in range(16)]),
-                'is_acting': True
+                'is_acting': True,
+                'health': None
             },
         }
 
@@ -97,6 +99,7 @@ class Sprites:
 
 class SpriteObject:
     def __init__(self, parameters, pos):
+        self.health = parameters['health']
         self.name = parameters['name']
         self.object = parameters['sprite'].copy()
         self.viewing_angles = parameters['viewing_angles']

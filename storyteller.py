@@ -3,7 +3,8 @@ import sys
 import os.path
 from settings import *
 
-
+dialog_person = ''
+weapon_damage = 0
 
 
 def get_level():
