@@ -9,7 +9,7 @@ from ray_casting import ray_casting
 from collections import deque
 from weaponClass import Weapon
 
-
+#gggg
 class Drawing():
     def __init__(self, sc, player, clock):
         self.sc = sc
