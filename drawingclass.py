@@ -32,7 +32,7 @@ class Drawing():
             1: Weapon(pygame.image.load('data/sprites/weapons/shotgun/default.png'), 'shotgun',
                       pygame.image.load('data/sprites/weapons/shotgun/default.png'),
                       deque([pygame.image.load(f'data/sprites/weapons/shotgun/{i}.png').convert_alpha()
-                             for i in range(20)]), pygame.mixer.Sound('data/sounds/weapon/shotgun/shot1.mp3'), 5, 10,
+                             for i in range(20)]), pygame.mixer.Sound('data/sounds/weapon/shotgun/shot1.mp3'), 3, 10,
                       deque([pygame.image.load(f'data/sprites/sfx/shotgun/{i}.png').convert_alpha() for i in range(9)]), 1),
             2: Weapon(pygame.image.load('data/sprites/weapons/pistol/default.png'), 'pistol',
                       pygame.image.load('data/sprites/weapons/pistol/default.png'),
@@ -73,7 +73,8 @@ class Drawing():
                 if bt1.handle_event(event):
                     dialog_trigger = False
                 bt1.update()
-                self.sc.fill(black)
+                pygame.draw.rect(self.sc, darkgrey, (200, 200, 750, 500))
+
                 bt1.draw(self.sc)
                 self.sc.blit(render, (60, 60))
                 pygame.display.update()
