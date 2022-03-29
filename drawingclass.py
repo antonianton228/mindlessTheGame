@@ -17,10 +17,10 @@ class Drawing():
         self.clock = clock
         self.player = player
         self.font = pygame.font.SysFont('Arial', 36, bold=True)
-        self.textures = {1: pygame.image.load('data/textures/forest1.png').convert(),
-                         2: pygame.image.load('data/textures/forest1.png').convert(),
-                         3: pygame.image.load('data/textures/forest1.png').convert(),
-                         4: pygame.image.load('data/textures/forest1.png').convert(),
+        self.textures = {1: pygame.image.load('data/textures/forest2.jpg').convert(),
+                         2: pygame.image.load('data/textures/forest2.jpg').convert(),
+                         3: pygame.image.load('data/textures/forest2.jpg').convert(),
+                         4: pygame.image.load('data/textures/forest2.jpg').convert(),
                          5: pygame.image.load('data/textures/sky.png').convert(),
                          6: pygame.image.load('data/textures/grass.jpg').convert()}
         # menu

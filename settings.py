@@ -52,9 +52,9 @@ white = (255, 255, 255)
 blue = (0, 0, 255)
 darkgrey = (100, 100, 100)
 yellow = (255, 255, 0)
-skyblue = (0, 186, 255)
+skyblue = (9, 3, 29)
 red = (255, 0, 0)
-grassgreen = (48, 156, 98)
+grassgreen = (10, 1, 28)
 
 # floor
 rot = 0
