@@ -46,7 +46,7 @@ while True:
     while flagloop:
         drawing.floor_drow(sc)
         player.movement()
-        # posx, posy, rot = player.movement_floor(posx, posy, rot, pygame.key.get_pressed(), clock.tick()) # хз почему, но без этого фпс меньше
+        clock.tick() # хз почему, но без этого фпс меньше
 
         walls, wall_hit = ray_casting_walls(player, drawing.textures)
 
@@ -67,7 +67,7 @@ while True:
         if not flagloop:
             break
         pygame.display.flip()
-        clock.tick(120)
+        clock.tick()
 
 
 
