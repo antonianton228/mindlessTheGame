@@ -1,4 +1,6 @@
 import math
+
+import drawingclass
 from settings import *
 import pygame
 import maps
@@ -6,6 +8,7 @@ from storyteller import change_level
 import settings
 
 collision_walls = maps.map_call()[0]
+
 
 class Player:
     def __init__(self, sprites):
@@ -27,10 +30,7 @@ class Player:
         self.checkpoint_dict = {0: [range(125, 175), range(15, 90), 1],
                                 1: [range(1251, 1751), range(15, 90), 2],
                                 2: [range(1251, 1751), range(15, 90), 3],
-                                } # [2] - след. уровень
-
-
-
+                                }  # [2] - след. уровень
 
     @property
     def pos(self):
@@ -41,19 +41,13 @@ class Player:
 
     def collision_list(self):
         return maps.map_call()[0] + [pygame.Rect(*obj.pos, obj.side, obj.side) for obj in
-                                  self.sprites.list_of_objects if obj.blocked]
-
-
-
-
+                                     self.sprites.list_of_objects if obj.blocked]
 
     def movement(self):
         self.get_key()
         self.mouse_control()
         self.rect.center = self.x, self.y
         self.angle %= double_pi
-
-
 
     def detect_collision(self, dx, dy):
         self.flag = True
@@ -86,8 +80,6 @@ class Player:
 
         self.x += dx
         self.y += dy
-
-
 
     def get_key(self):
         sin_a = math.sin(self.angle)
@@ -137,27 +129,3 @@ class Player:
             pygame.mouse.set_pos((half_width, half_height))
             self.angle += diff * self.sensivity
         return self.angle
-
-    def movement_floor(self, posx, posy, rot, keys, et):
-        return 0, 0, 0
-        # if self.flag:
-        #     if keys[pygame.K_LEFT] or keys[ord('a')]:
-        #         px, py = np.sin(rot) * 0.002 * et, np.cos(rot) * 0.002 * et
-        #         posx, posy = posx + px, posy - py
-        #
-        #     if keys[pygame.K_RIGHT] or keys[ord('d')]:
-        #         posx, posy = posx - np.sin(rot) * 0.002 * et, posy + np.cos(rot) * 0.002 * et
-        #
-        #     if keys[pygame.K_UP] or keys[ord('w')]:
-        #         posx, posy = posx + np.cos(rot) * 0.002 * et, posy + np.sin(rot) * 0.002 * et
-        #
-        #     if keys[pygame.K_DOWN] or keys[ord('s')]:
-        #         posx, posy = posx - np.cos(rot) * 0.002 * et, posy - np.sin(rot) * 0.002 * et
-        #     rot = self.mouse_control()
-        #     if not self.flag1:
-        #         posy = 0
-        #     if not self.flag2:
-        #         posx = 0
-        #     return posx, posy, rot
-        # else:
-        #     return 0, 0, rot

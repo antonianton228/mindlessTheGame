@@ -70,6 +70,7 @@ class Interaction:
                             self.drawing.shot_animation_trigger = False
                             break
                     break
+
     def acting_object(self):
         if self.player.action:
             for obj in sorted(self.sprites.list_of_objects, key=lambda x: x.distance_to_sprite):
@@ -101,10 +102,11 @@ class Interaction:
         [self.sprites.list_of_objects.remove(obj) for obj in deleted_objects if obj.delete]
 
     def play_music(self):
-        pygame.mixer.pre_init(44100, -16, 2, 2048)
-        pygame.mixer.init()
-        pygame.mixer.music.load('data/sounds/test_music/VasyaSong.mp3')
-        pygame.mixer.music.set_volume(0.07)
-        pygame.mixer.music.play(10)
+        pass
+        # pygame.mixer.pre_init(44100, -16, 2, 2048)
+        # pygame.mixer.init()
+        # pygame.mixer.music.load('data/sounds/test_music/VasyaSong.mp3')
+        # pygame.mixer.music.set_volume(0.07)
+        # pygame.mixer.music.play(10)
 
 

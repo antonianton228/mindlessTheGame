@@ -191,9 +191,9 @@ class SpriteObject:
             # scaling
             sprite_pos = (self.current_ray * scale - half_sprite_width, half_height - half_sprite_height + shift)
             sprite = pygame.transform.scale(sprite_object, (sprite_width, sprite_height))
-            return (self.distance_to_sprite, sprite, sprite_pos)
+            return self.distance_to_sprite, sprite, sprite_pos
         else:
-            return (False,)
+            return False,
 
     def anim(self):
         if self.animation and self.distance_to_sprite < self.animation_dist:

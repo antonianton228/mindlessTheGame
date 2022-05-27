@@ -18,9 +18,11 @@ def get_level():
         save.close()
     return level1
 
+
 def change_level(level_n, player):
     save = open('saves/save.txt', '+w')
     save.write(f'level = {level_n}')
+    save.close()
     level = level_n
 
     # player.pos = (150, 350)

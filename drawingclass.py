@@ -1,18 +1,15 @@
 import random
 import sys
-
 import pygame
-
 import settings
 from settings import *
 from ray_casting import ray_casting
 from collections import deque
 from weaponClass import Weapon
 
-#gggg
-class Drawing():
-    def __init__(self, sc, player, clock):
 
+class Drawing:
+    def __init__(self, sc, player, clock):
         self.sc = sc
         self.clock = clock
         self.player = player
@@ -112,7 +109,6 @@ class Drawing():
     def player_weapon(self, shots):
         if settings.weapon_in_hand_trigger:
             self.weapon_draw(settings.weapon_in_hand)
-            print(settings.weapon_in_hand)
         settings.weapon_in_hand_trigger = False
         if self.player.shot:
             if not self.shot_lenght_count:
@@ -136,6 +132,7 @@ class Drawing():
         else:
             self.sc.blit(self.weapon_base_sprite, self.weapon_pos)
 
+
     def bullet_sfx(self):
         if self.sfx_lenght_count < self.sfx_lenght:
             sfx = pygame.transform.scale(self.sfx[0],
@@ -149,6 +146,7 @@ class Drawing():
     def floor_drow(self, sc):
         pygame.draw.rect(sc, skyblue, (0, 0, 1200, 400))
         pygame.draw.rect(sc, grassgreen, (0, 400, 1200, 800))
+
 
     def menu(self):
         x = 0
@@ -196,8 +194,7 @@ class Drawing():
             self.clock.tick(100)
 
 
-class Button():
-
+class Button:
     def __init__(self, text, x, y, width, height, command=None):
 
         self.text = text

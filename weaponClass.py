@@ -1,5 +1,6 @@
 from settings import *
 
+
 class Weapon:
     def __init__(self, base, name, sprite, anim, sound, damage, bullets, sfx, anim_speed):
         self.name = name
