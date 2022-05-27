@@ -1,5 +1,4 @@
 import pygame
-
 import settings
 from playerclass import Player
 from settings import *
@@ -11,6 +10,8 @@ from numba import njit
 from ray_casting import ray_casting_walls
 from npc_ai import Interaction
 import storyteller
+import pygame as pg
+import floor
 
 
 
@@ -21,19 +22,8 @@ sc = pygame.display.set_mode((width, height))
 clock = pygame.time.Clock()
 sprites = Sprites()
 player = Player(sprites)
-drawing = Drawing(sc , player, clock)
+drawing = Drawing(sc, player, clock)
 interaction = Interaction(player, sprites, drawing)
-
-
-
-hres = 400  # horizontal resolution
-halfvres = 200  # vertical resolution/2
-mod = hres / 60  # scaling factor (60° fov)
-posx, posy, rot = 0, 0, 0
-frame = np.random.uniform(0, 1, (hres, halfvres * 2, 3))
-sky = pygame.image.load('data/textures/skybox2.jpg')
-sky = pygame.surfarray.array3d(pygame.transform.scale(sky, (100, halfvres * 2))) / 255
-#print(floor)
 
 
 pygame.mouse.set_visible(True)
@@ -43,16 +33,21 @@ interaction.play_music()
 while True:
     world_map = maps.map_call()[1]
     flagloop = True
+    last_surf = []
     while flagloop:
-        drawing.floor_drow(sc)
+        last_x, last_y, last_angle, move = player.x, player.y, player.angle, 1000000
         player.movement()
-        # posx, posy, rot = player.movement_floor(posx, posy, rot, pygame.key.get_pressed(), clock.tick()) # хз почему, но без этого фпс меньше
+        if player.x == last_x and player.y == last_y and player.angle == last_angle:
+            move = 0
 
         walls, wall_hit = ray_casting_walls(player, drawing.textures)
 
         sprites.list_of_objects = sprites.dict_of_objects[storyteller.get_level()]
 
-        drawing.world(walls + [obj.object_locate(player) for obj in sprites.list_of_objects])
+        # drawing.floor_drow(sc)
+        floor_sky = floor.floor(player.x, player.y, player.angle, move, last_surf)
+        last_surf = floor_sky[1]
+        drawing.world(walls + [obj.object_locate(player) for obj in sprites.list_of_objects] + [floor_sky])
         drawing.fps(clock)
         drawing.player_weapon([wall_hit, sprites.sprite_hit])
 
@@ -68,8 +63,3 @@ while True:
             break
         pygame.display.flip()
         clock.tick(120)
-
-
-
-
-
