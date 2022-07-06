@@ -17,12 +17,12 @@ tile = 100
 # ray casting settings
 fov = math.pi / 3
 half_fov = fov / 2
-num_rays = 600
+num_rays = 200
 max_depth = 800
 penta_height = 5 * height
 delta_angle = fov / num_rays
 dist = num_rays / (2 * math.tan(half_fov))
-proj_coof = dist * tile * 1.5
+proj_coof = 2 * dist * tile * 1.5
 scale = width // num_rays
 
 # sprites
@@ -56,8 +56,6 @@ skyblue = (9, 3, 29)
 red = (255, 0, 0)
 grassgreen = (10, 1, 28)
 
-# floor
-rot = 0
 
 # SAVE
 level = storyteller.get_level()
@@ -66,3 +64,7 @@ level = storyteller.get_level()
 weapon_in_hand = 1
 weapon_in_hand_trigger = False
 dialog_draw = False
+
+# story
+num_kvest = 1
+num_last_kvest = 0

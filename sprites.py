@@ -96,7 +96,6 @@ class Sprites:
         return min([obj.is_on_fire for obj in self.list_of_objects], default=(float('inf'), 0))
 
 
-
 class SpriteObject:
     def __init__(self, parameters, pos):
         self.health = parameters['health']

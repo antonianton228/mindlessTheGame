@@ -11,13 +11,13 @@ from ray_casting import ray_casting_walls, floor, floor_settings
 from npc_ai import Interaction
 import storyteller
 import pygame as pg
+from lor import Story
 
 
 
 
 pygame.init()
 sc = pygame.display.set_mode((width, height))
-
 clock = pygame.time.Clock()
 sprites = Sprites()
 player = Player(sprites)
@@ -29,6 +29,7 @@ pygame.mouse.set_visible(True)
 drawing.menu()
 pygame.mouse.set_visible(False)
 interaction.play_music()
+story = Story(sprites, player, drawing)
 while True:
     world_map = maps.map_call()[1]
     flagloop = True
@@ -54,8 +55,13 @@ while True:
         interaction.acting_object()
         interaction.clear_objects()
         if settings.dialog_draw:
-            drawing.dialoge_draw()
+            drawing.dialoge_draw('До свидания')
             settings.dialog_draw = False
+        story.make_kvest()
+        settings.num_kvest = story.new_kvest(settings.num_kvest)
+        if settings.num_last_kvest != settings.num_kvest:
+            settings.num_last_kvest = settings.num_kvest
+            story.start_kvest(settings.num_kvest)
 
         if not flagloop:
             break

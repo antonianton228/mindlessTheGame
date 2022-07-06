@@ -93,14 +93,14 @@ def ray_casting_walls(player, textures):
 
 def floor(posx, posy, rot, move, surf, s):
     if move and s < 2:
-        hres = 120  # horizontal resolution
-        halfvres = 70  # vertical resolution/2
+        hres = 200  # horizontal resolution
+        halfvres = 200  # vertical resolution/2
 
         mod = hres / 60  # scaling factor (60° fov)
         frame = np.random.uniform(0, 1, (hres, halfvres * 2, 3))
         sky = pg.image.load('data/textures/skybox.jpg')
         sky = pg.surfarray.array3d(pg.transform.scale(sky, (360, halfvres * 2))) / 255
-        floor = pg.surfarray.array3d(pg.image.load('data/textures/floor.jpg')) / 255
+        floor = pg.surfarray.array3d(pg.image.load('data/textures/Brick_texture.jpg')) / 255
 
         frame = new_frame(posx, posy, rot, frame, sky, floor, hres, halfvres, mod)
 

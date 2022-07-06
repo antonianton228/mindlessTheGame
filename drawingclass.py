@@ -57,10 +57,10 @@ class Drawing:
         self.sfx_lenght_count = self.weapon_dict[1].sfx_lenght_count
         self.sfx_lenght = self.weapon_dict[1].sfx_lenght
 
-    def dialoge_draw(self):
+    def dialoge_draw(self, string):
         name_of_speaker = storyteller.dialog_person
         render = self.font.render(name_of_speaker, 0, red)
-        bt1 = Button('До свидания', 300, 300, 500, 300)
+        bt1 = Button(string, 300, 300, 500, 300)
         pygame.mouse.set_visible(True)
         dialog_trigger = True
         while dialog_trigger:
