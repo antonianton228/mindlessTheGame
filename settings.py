@@ -17,12 +17,13 @@ tile = 100
 # ray casting settings
 fov = math.pi / 3
 half_fov = fov / 2
-num_rays = 200
+num_rays = 600
 max_depth = 800
 penta_height = 5 * height
 delta_angle = fov / num_rays
 dist = num_rays / (2 * math.tan(half_fov))
-proj_coof = 2 * dist * tile * 1.5
+dist = num_rays / (2 * math.tan(half_fov))
+proj_coof = dist * tile * 1.5
 scale = width // num_rays
 
 # sprites
@@ -67,4 +68,10 @@ dialog_draw = False
 
 # story
 num_kvest = 1
+name_quest = ""
 num_last_kvest = 0
+needed_speaker = ''
+is_quests = True
+quest_trigger1 = False
+quest_trigger2 = False
+quest_trigger3 = False

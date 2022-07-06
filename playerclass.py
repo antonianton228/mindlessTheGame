@@ -12,7 +12,12 @@ collision_walls = maps.map_call()[0]
 
 class Player:
     def __init__(self, sprites):
-        self.x, self.y = player_pos
+        self.player_start_pos_dict = {
+            0: (1120, 125),
+            1: (200, 200),
+            2: (200, 200),
+        }
+        self.x, self.y = self.player_start_pos_dict[level]
         self.sprites = sprites
         self.angle = player_angle
         self.sensivity = 0.002
@@ -26,15 +31,18 @@ class Player:
         self.shot = False
         # взаимодействие
         self.action = False
+        self.hp = 100
+        self.is_alive = True
 
-        self.checkpoint_dict = {0: [range(125, 175), range(15, 90), 1],
+        self.checkpoint_dict = {0: [range(2000, 2300), range(1400, 1500), 1],
                                 1: [range(1251, 1751), range(15, 90), 2],
                                 2: [range(1251, 1751), range(15, 90), 3],
                                 }  # [2] - след. уровень
 
     @property
     def pos(self):
-        if int(self.y) in self.checkpoint_dict[level][0] and int(self.x) in self.checkpoint_dict[level][1]:
+        if int(self.x) in self.checkpoint_dict[level][0] and int(self.y) in self.checkpoint_dict[level][1]:
+            print(1)
             change_level(self.checkpoint_dict[level][2], self)
             self.x, self.y = 150, 350
         return self.x, self.y
@@ -48,6 +56,11 @@ class Player:
         self.mouse_control()
         self.rect.center = self.x, self.y
         self.angle %= double_pi
+
+    def take_damage(self, n):
+        self.hp = self.hp - n
+        if self.hp <= 0:
+            self.is_alive = False
 
     def detect_collision(self, dx, dy):
         self.flag = True

@@ -2,6 +2,7 @@ import pygame
 import sys
 import os.path
 from settings import *
+import settings
 
 dialog_person = ''
 weapon_damage = 0
@@ -23,6 +24,6 @@ def change_level(level_n, player):
     save = open('saves/save.txt', '+w')
     save.write(f'level = {level_n}')
     save.close()
-    level = level_n
+    settings.level = level_n
 
     # player.pos = (150, 350)

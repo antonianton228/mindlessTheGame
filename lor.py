@@ -1,3 +1,11 @@
+import settings
+
+def f1():
+    settings.is_quests = False
+
+def f2():
+    settings.is_quests = True
+
 class Story:
     def __init__(self, sprites, player, drawing):
         self.drawing = drawing
@@ -6,25 +14,53 @@ class Story:
         self.kvests = {}
 
     def start_kvest(self, num_kvest):
-        self.drawing.dialoge_draw(self.kvests[num_kvest][0])
+        self.drawing.dialoge_draw(f'Твое следующее задание: {self.kvests[num_kvest][0]}', f'{self.kvests[num_kvest][4]}', f'{self.kvests[num_kvest][5]}')
 
     def new_kvest(self, num_kvest):
+        settings.needed_speaker = self.kvests[num_kvest][2]
+        self.kvests[num_kvest][3]()
+        print(self.kvests[num_kvest][1], settings.level)
         if self.kvests[num_kvest][1]:
             return num_kvest + 1
+        settings.name_quest = self.kvests[num_kvest][0]
         return num_kvest
 
     def make_kvest(self):
         self.kvests = {
             1: [
-                'Твое первое задание: выстрели с оружия.',
-                self.player.shot
+                'Идите на заправку',
+                settings.level == 1,
+                'None1',
+                f2,
+                'Да, я иду',
+                'Надо немного подождать'
             ],
             2: [
-                'Твое следующее задание: убей врага.',
-                self.sprites.list_of_objects[0].is_dead
+                'Убей врага',
+                self.sprites.dict_of_objects[settings.level][1].is_dead,
+                'None1',
+                f2,
+                'Да, я иду',
+                'Надо немного подождать'
             ],
             3: [
-                'Твое следующее задание: трахни антона.',
-                False
+                'Поговори с огнём',
+                settings.quest_trigger1,
+                'fire',
+                f1,
+                'Да, я иду',
+                'Надо немного подождать'
+            ],
+            4: [
+                'Все',
+                False,
+                'None',
+                f2,
+                'Да, я иду',
+                'Надо немного подождать'
             ]
         }
+
+
+
+

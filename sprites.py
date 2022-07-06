@@ -56,7 +56,8 @@ class Sprites:
                 'flag': 'npc',
                 'obj_action': deque([pygame.image.load(f'data/sprites/npc/unfriendly/testsquare/{i}.png').convert_alpha() for i in range(2)]),
                 'is_acting': True,
-                'health': 100
+                'health': 100,
+                'damage': 1
             },
             'fire': {
                 'name': 'fire',
@@ -77,14 +78,16 @@ class Sprites:
                 'flag': 'decor',
                 'obj_action': deque([pygame.image.load(f'data/sprites/unstatic/anim/{i}.png').convert_alpha() for i in range(16)]),
                 'is_acting': True,
-                'health': None
+                'health': None,
+                'damage': 0,
             },
         }
 
         self.dict_of_objects = {
             0: [SpriteObject(self.sprite_parameters['fire'], (9, 4)),
                 SpriteObject(self.sprite_parameters['square'], (7, 4)),],
-            1: [SpriteObject(self.sprite_parameters['square'], (1, 1)),],
+            1: [SpriteObject(self.sprite_parameters['square'], (1, 1)),
+                SpriteObject(self.sprite_parameters['square'], (1, 1)),],
             2: [SpriteObject(self.sprite_parameters['fire'], (2, 3)),
                 SpriteObject(self.sprite_parameters['square'], (5, 1)), ],
         }
@@ -120,6 +123,7 @@ class SpriteObject:
         self.dead_animation_count = 0
         self.is_acting = parameters['is_acting']
         self.animation_count = 0
+        self.damage = parameters['damage']
         self.npc_action_trigger = False
         self.door_open_trigger = False
         self.door_prev_pos = self.y if self.flag == 'door_h' else self.x
@@ -147,7 +151,8 @@ class SpriteObject:
         return self.x - self.side // 2 , self.y - self.side // 2
 
 
-
+    def get_damage(self):
+        return self.damage
 
     def object_locate(self, player):
         dx, dy = self.x - player.x, self.y - player.y
@@ -224,7 +229,7 @@ class SpriteObject:
                 self.dead_sprite = self.death_animation.popleft()
                 self.dead_animation_count = 0
         else:
-            self.delete = True
+            self.delete = False
         return self.dead_sprite
 
     def npc_ai(self):

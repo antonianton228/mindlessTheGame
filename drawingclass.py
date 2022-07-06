@@ -18,11 +18,8 @@ class Drawing:
         self.player = player
         self.font = pygame.font.SysFont('Arial', 36, bold=True)
         self.textures = {1: pygame.image.load('data/textures/forest2.jpg').convert(),
-                         2: pygame.image.load('data/textures/forest2.jpg').convert(),
-                         3: pygame.image.load('data/textures/forest2.jpg').convert(),
-                         4: pygame.image.load('data/textures/forest2.jpg').convert(),
-                         5: pygame.image.load('data/textures/sky.png').convert(),
-                         6: pygame.image.load('data/textures/grass.jpg').convert()}
+                         2: pygame.image.load('data/textures/Zapr1.jpg').convert(),
+                         3: pygame.image.load('data/textures/Zapr2.jpg').convert()}
         # menu
         self.menu_trigger = True
         self.menu_picture = pygame.image.load('data/menu/test.jpg').convert()
@@ -57,10 +54,12 @@ class Drawing:
         self.sfx_lenght_count = self.weapon_dict[1].sfx_lenght_count
         self.sfx_lenght = self.weapon_dict[1].sfx_lenght
 
-    def dialoge_draw(self, string):
+    def dialoge_draw(self, string_name, string_but1, string_but2):
         name_of_speaker = storyteller.dialog_person
-        render = self.font.render(name_of_speaker, 0, red)
-        bt1 = Button(string, 300, 300, 500, 300)
+        render1 = self.font.render(name_of_speaker, False, red)
+        render2 = self.font.render(string_name, False, red)
+        bt1 = Button(string_but1, 300, 300, 500, 100, name_of_speaker)
+        bt2 = Button(string_but2, 300, 420, 500, 100, name_of_speaker)
         pygame.mouse.set_visible(True)
         dialog_trigger = True
         while dialog_trigger:
@@ -73,10 +72,15 @@ class Drawing:
                 if bt1.handle_event(event):
                     dialog_trigger = False
                 bt1.update()
-                pygame.draw.rect(self.sc, darkgrey, (200, 200, 750, 500))
+                if bt2.handle_event(event):
+                    dialog_trigger = False
+                bt2.update()
+                pygame.draw.rect(self.sc, darkgrey, (150, 150, 800, 550))
 
                 bt1.draw(self.sc)
-                self.sc.blit(render, (60, 60))
+                bt2.draw(self.sc)
+                self.sc.blit(render1, (60, 60))
+                self.sc.blit(render2, (150, 250))
                 pygame.display.update()
                 self.clock.tick(25)
         pygame.mouse.set_visible(False)
@@ -108,6 +112,22 @@ class Drawing:
         display_fps = str(int(clock.get_fps()))
         render = self.font.render(display_fps, 0, red)
         self.sc.blit(render, (width - 65, 5))
+
+    def quest_bar(self):
+        quest = settings.name_quest
+        render = self.font.render(quest, 0, red)
+        self.sc.blit(render, (65, 5))
+
+    def hp_bar(self):
+        hp = self.player.hp
+        pygame.draw.rect(self.sc, (255, 0, 0),
+                         (40, 660, 300, 75))
+        pygame.draw.rect(self.sc, (0, 255, 0),
+                         (40, 660, 300*hp/100, 75))
+        render = self.font.render(f'{hp}/100', 0, white)
+        self.sc.blit(render, (150, 680))
+        # render = self.font.render(quest, 0, red)
+        # self.sc.blit(render, (65, 5))
 
     def player_weapon(self, shots):
         if settings.weapon_in_hand_trigger:
@@ -198,9 +218,10 @@ class Drawing:
 
 
 class Button:
-    def __init__(self, text, x, y, width, height, command=None):
+    def __init__(self, text, x, y, width, height, name_of_speaker, command=None):
 
         self.text = text
+        self.name_of_speaker = name_of_speaker
         self.command = command
 
         self.image_normal = pygame.Surface((width, height))
@@ -243,6 +264,10 @@ class Button:
             self.hovered = self.rect.collidepoint(event.pos)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if self.hovered:
+                settings.quest_trigger1 = False
+                print(settings.needed_speaker, self.name_of_speaker)
+                if settings.needed_speaker == self.name_of_speaker:
+                    settings.quest_trigger1 = True
                 return True
                 # if self.command:
                 #     self.command()
