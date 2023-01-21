@@ -16,7 +16,7 @@ def get_level():
         save = open('saves/save.txt', '+w')
         save.write('level = 00')
         level1 = 0
-        save.close()
+    save.close()
     return level1
 
 

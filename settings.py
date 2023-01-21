@@ -22,7 +22,6 @@ max_depth = 800
 penta_height = 5 * height
 delta_angle = fov / num_rays
 dist = num_rays / (2 * math.tan(half_fov))
-dist = num_rays / (2 * math.tan(half_fov))
 proj_coof = dist * tile * 1.5
 scale = width // num_rays
 
@@ -58,13 +57,14 @@ red = (255, 0, 0)
 grassgreen = (10, 1, 28)
 
 
-# SAVE
+# lvl
 level = storyteller.get_level()
+move_next_lvl = True
+change_map = False
 
 # weapon
 weapon_in_hand = 1
 weapon_in_hand_trigger = False
-dialog_draw = False
 
 # story
 num_kvest = 1
@@ -75,3 +75,4 @@ is_quests = True
 quest_trigger1 = False
 quest_trigger2 = False
 quest_trigger3 = False
+dialog_draw = ''

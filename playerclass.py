@@ -24,9 +24,6 @@ class Player:
         # collision
         self.side = 50
         self.rect = pygame.Rect(*player_pos, self.side, self.side)
-        self.flag1 = True  # это кринж но подругому не сделать
-        self.flag2 = True  # это кринж но подругому не сделать
-        self.flag = True  # это кринж но подругому не сделать
         # weapon
         self.shot = False
         # взаимодействие
@@ -35,16 +32,17 @@ class Player:
         self.is_alive = True
 
         self.checkpoint_dict = {0: [range(2000, 2300), range(1400, 1500), 1],
-                                1: [range(1251, 1751), range(15, 90), 2],
+                                1: [range(200, 300), range(1400, 1500), 2],
                                 2: [range(1251, 1751), range(15, 90), 3],
                                 }  # [2] - след. уровень
 
     @property
     def pos(self):
-        if int(self.x) in self.checkpoint_dict[level][0] and int(self.y) in self.checkpoint_dict[level][1]:
-            print(1)
+        if int(self.x) in self.checkpoint_dict[settings.level][0] and int(self.y) in self.checkpoint_dict[settings.level][1] and settings.move_next_lvl:
             change_level(self.checkpoint_dict[level][2], self)
-            self.x, self.y = 150, 350
+            settings.change_map = True
+            settings.move_next_lvl = False
+            self.x, self.y = 200, 200
         return self.x, self.y
 
     def collision_list(self):
@@ -63,9 +61,6 @@ class Player:
             self.is_alive = False
 
     def detect_collision(self, dx, dy):
-        self.flag = True
-        self.flag1 = True
-        self.flag2 = True
         next_rect = self.rect.copy()
         next_rect.move_ip(dx, dy)
         hit_indexes = next_rect.collidelistall(self.collision_list())
@@ -83,13 +78,10 @@ class Player:
                     delta_y += hit_rect.bottom - next_rect.top
             if abs(delta_x - delta_y) < 10:
                 dx, dy = 0, 0
-                self.flag = False
             elif delta_x > delta_y:
                 dy = 0
-                self.flag1 = False
             elif delta_y > delta_x:
                 dx = 0
-                self.flag2 = False
 
         self.x += dx
         self.y += dy

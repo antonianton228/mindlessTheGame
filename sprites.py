@@ -4,7 +4,6 @@ from collections import deque
 from ray_casting import ray_casting
 
 
-
 class Sprites:
     def __init__(self):
         self.sprite_parameters = {
@@ -57,7 +56,8 @@ class Sprites:
                 'obj_action': deque([pygame.image.load(f'data/sprites/npc/unfriendly/testsquare/{i}.png').convert_alpha() for i in range(2)]),
                 'is_acting': True,
                 'health': 100,
-                'damage': 1
+                'damage': 1,
+                'phrases': ('Привет', 'пошел вон, псина', 'черт сутулый'),
             },
             'fire': {
                 'name': 'fire',
@@ -80,14 +80,41 @@ class Sprites:
                 'is_acting': True,
                 'health': None,
                 'damage': 0,
+                'phrases': ('Привет', 'иди на выход, он открылся', 'придайся огню'),
+            },
+            'fire1': {
+                'name': 'fire1',
+                'sprite': pygame.image.load('data/sprites/unstatic/anim/base.png').convert_alpha(),
+                # Всегда делать 8 текстурок, если меньше, то крашится
+                'viewing_angles': False,
+                'shift': 0.8,
+                'scale': (1, 1),
+                'animation': deque(
+                    [pygame.image.load(f'data/sprites/unstatic/anim/{i}.png').convert_alpha() for i in range(12)]),
+                'death_animation': deque(
+                    [pygame.image.load(f'data/sprites/npc/unfriendly/testsquare/{i}.png')] for i in range(6)),
+                'is_dead': 'immortal',
+                'side': 30,
+                'dead_shift': 0.8,
+                'animation_dist': 800,
+                'animation_speed': 2,
+                'blocked': True,
+                'flag': 'decor',
+                'obj_action': deque(
+                    [pygame.image.load(f'data/sprites/unstatic/anim/{i}.png').convert_alpha() for i in range(16)]),
+                'is_acting': True,
+                'health': None,
+                'damage': 0,
+                'phrases': ('Привет', 'не ходи к другому, он кусаптся', 'люблю шашлык'),
             },
         }
 
         self.dict_of_objects = {
             0: [SpriteObject(self.sprite_parameters['fire'], (9, 4)),
                 SpriteObject(self.sprite_parameters['square'], (7, 4)),],
-            1: [SpriteObject(self.sprite_parameters['square'], (1, 1)),
-                SpriteObject(self.sprite_parameters['square'], (1, 1)),],
+            1: [SpriteObject(self.sprite_parameters['square'], (5, 2)),
+                SpriteObject(self.sprite_parameters['fire'], (2, 3)),
+                SpriteObject(self.sprite_parameters['fire1'], (5, 6)),],
             2: [SpriteObject(self.sprite_parameters['fire'], (2, 3)),
                 SpriteObject(self.sprite_parameters['square'], (5, 1)), ],
         }

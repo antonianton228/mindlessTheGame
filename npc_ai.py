@@ -63,9 +63,6 @@ class Interaction:
                     if obj.is_dead != 'immortal' and not obj.is_dead:
                         if ray_casting_npc_player(obj.x, obj.y, world_map, self.player.pos):
                             obj.health -= storyteller.weapon_damage
-
-
-
                             if obj.health <= 0:
                                 obj.is_dead = True
                                 obj.blocked = None
@@ -81,7 +78,7 @@ class Interaction:
                         if ray_casting_npc_player(obj.x, obj.y, world_map, self.player.pos):
                             storyteller.dialog_person = obj.name
                             self.player.action = False
-                            settings.dialog_draw = True
+                            settings.dialog_draw = obj.name
 
     def npc_action(self):
         for i in self.sprites.list_of_objects:
@@ -101,7 +98,6 @@ class Interaction:
         elif abs(obj.distance_to_sprite) <= tile:
             obj.object_locate(self.player)
             self.player.take_damage(obj.get_damage())
-
 
     def clear_objects(self):
         deleted_objects = self.sprites.list_of_objects[:]

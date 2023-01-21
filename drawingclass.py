@@ -19,7 +19,8 @@ class Drawing:
         self.font = pygame.font.SysFont('Arial', 36, bold=True)
         self.textures = {1: pygame.image.load('data/textures/forest2.jpg').convert(),
                          2: pygame.image.load('data/textures/Zapr1.jpg').convert(),
-                         3: pygame.image.load('data/textures/Zapr2.jpg').convert()}
+                         3: pygame.image.load('data/textures/Zapr2.jpg').convert(),
+                         4: pygame.image.load('data/textures/forest1.png').convert()}
         # menu
         self.menu_trigger = True
         self.menu_picture = pygame.image.load('data/menu/test.jpg').convert()
@@ -65,15 +66,15 @@ class Drawing:
         while dialog_trigger:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    dialog_trigger = False
+                    return False
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        dialog_trigger = False
+                        return False
                 if bt1.handle_event(event):
-                    dialog_trigger = False
+                    return True
                 bt1.update()
                 if bt2.handle_event(event):
-                    dialog_trigger = False
+                    return False
                 bt2.update()
                 pygame.draw.rect(self.sc, darkgrey, (150, 150, 800, 550))
 
@@ -155,7 +156,6 @@ class Drawing:
         else:
             self.sc.blit(self.weapon_base_sprite, self.weapon_pos)
 
-
     def bullet_sfx(self):
         if self.sfx_lenght_count < self.sfx_lenght:
             sfx = pygame.transform.scale(self.sfx[0],
@@ -169,7 +169,6 @@ class Drawing:
     def floor_drow(self, sc):
         pygame.draw.rect(sc, skyblue, (0, 0, 1200, 400))
         pygame.draw.rect(sc, grassgreen, (0, 400, 1200, 800))
-
 
     def menu(self):
         x = 0
@@ -241,7 +240,6 @@ class Button:
         self.image_normal.blit(text_image, text_rect)
         self.image_hovered.blit(text_image, text_rect)
 
-        # you can't use it before `blit`
         self.rect.topleft = (x, y)
 
         self.hovered = False
@@ -259,15 +257,11 @@ class Button:
         surface.blit(self.image, self.rect)
 
     def handle_event(self, event):
-
         if event.type == pygame.MOUSEMOTION:
             self.hovered = self.rect.collidepoint(event.pos)
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if self.hovered:
                 settings.quest_trigger1 = False
-                print(settings.needed_speaker, self.name_of_speaker)
                 if settings.needed_speaker == self.name_of_speaker:
                     settings.quest_trigger1 = True
                 return True
-                # if self.command:
-                #     self.command()

@@ -19,7 +19,6 @@ class Story:
     def new_kvest(self, num_kvest):
         settings.needed_speaker = self.kvests[num_kvest][2]
         self.kvests[num_kvest][3]()
-        print(self.kvests[num_kvest][1], settings.level)
         if self.kvests[num_kvest][1]:
             return num_kvest + 1
         settings.name_quest = self.kvests[num_kvest][0]
@@ -30,14 +29,14 @@ class Story:
             1: [
                 'Идите на заправку',
                 settings.level == 1,
-                'None1',
+                '',
                 f2,
                 'Да, я иду',
                 'Надо немного подождать'
             ],
             2: [
-                'Убей врага',
-                self.sprites.dict_of_objects[settings.level][1].is_dead,
+                'Убейте всех врагов',
+                not list(filter(lambda x: x.name == 'square' and not x.is_dead, self.sprites.dict_of_objects[settings.level])),
                 'None1',
                 f2,
                 'Да, я иду',
@@ -60,7 +59,3 @@ class Story:
                 'Надо немного подождать'
             ]
         }
-
-
-
-
