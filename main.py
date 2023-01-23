@@ -1,3 +1,4 @@
+import pygame
 import settings
 from playerclass import Player
 import maps
