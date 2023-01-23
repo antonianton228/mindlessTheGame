@@ -5,7 +5,6 @@ import math
 import pygame
 from numba import njit
 import settings
-import drawingclass
 
 world_map = maps.map_call()[1]
 
@@ -104,11 +103,8 @@ class Interaction:
         [self.sprites.list_of_objects.remove(obj) for obj in deleted_objects if obj.delete]
 
     def play_music(self):
-        pass
-        # pygame.mixer.pre_init(44100, -16, 2, 2048)
-        # pygame.mixer.init()
-        # pygame.mixer.music.load('data/sounds/test_music/VasyaSong.mp3')
-        # pygame.mixer.music.set_volume(0.07)
-        # pygame.mixer.music.play(10)
-
-
+        pygame.mixer.pre_init(44100, -16, 2, 2048)
+        pygame.mixer.init()
+        pygame.mixer.music.load('data/sounds/test_music/VasyaSong.mp3')
+        pygame.mixer.music.set_volume(0.07)
+        pygame.mixer.music.play(10)

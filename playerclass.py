@@ -1,6 +1,3 @@
-import math
-
-import drawingclass
 from settings import *
 import pygame
 import maps
@@ -17,7 +14,7 @@ class Player:
             1: (200, 200),
             2: (200, 200),
         }
-        self.x, self.y = self.player_start_pos_dict[level]
+        self.x, self.y = self.player_start_pos_dict[settings.level]
         self.sprites = sprites
         self.angle = player_angle
         self.sensivity = 0.002
@@ -34,15 +31,15 @@ class Player:
         self.checkpoint_dict = {0: [range(2000, 2300), range(1400, 1500), 1],
                                 1: [range(200, 300), range(1400, 1500), 2],
                                 2: [range(1251, 1751), range(15, 90), 3],
-                                }  # [2] - след. уровень
+                                }
 
     @property
     def pos(self):
-        if int(self.x) in self.checkpoint_dict[settings.level][0] and int(self.y) in self.checkpoint_dict[settings.level][1] and settings.move_next_lvl:
+        if int(self.x) in self.checkpoint_dict[settings.level][0] and int(self.y) in \
+                self.checkpoint_dict[settings.level][1] and settings.move_next_lvl:
             change_level(self.checkpoint_dict[level][2], self)
             settings.change_map = True
             settings.move_next_lvl = False
-            self.x, self.y = 200, 200
         return self.x, self.y
 
     def collision_list(self):

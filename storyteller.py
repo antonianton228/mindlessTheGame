@@ -1,7 +1,4 @@
-import pygame
-import sys
 import os.path
-from settings import *
 import settings
 
 dialog_person = ''
@@ -25,5 +22,3 @@ def change_level(level_n, player):
     save.write(f'level = {level_n}')
     save.close()
     settings.level = level_n
-
-    # player.pos = (150, 350)

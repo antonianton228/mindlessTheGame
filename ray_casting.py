@@ -1,8 +1,6 @@
-import pygame as pg
 from settings import *
 import maps
 from numba import njit
-import numpy as np
 
 world_map, world_width, world_height = maps.map_call()[1], maps.map_call()[2], maps.map_call()[3]
 
@@ -88,11 +86,3 @@ def ray_casting_walls(player, textures, world_map):
             wall_pos = (ray * scale, half_height - proj_height * 1.22)
         walls.append((depth, wall_column, wall_pos))
     return walls, wall_hit
-
-
-def floor_settings(x, y, angle, last_x, last_y, last_angle, s, move):
-    if x == last_x and y == last_y and angle == last_angle:
-        move = 0
-    else:
-        s = s + 1 if s < 4 else 0
-    return move, s

@@ -1,6 +1,4 @@
 import math
-import numpy as np
-import pygame
 import storyteller
 
 # game settings
@@ -12,7 +10,6 @@ double_height = height * 2
 
 FPS = 65
 tile = 100
-
 
 # ray casting settings
 fov = math.pi / 3
@@ -31,19 +28,16 @@ center_ray = num_rays // 2 - 1
 fake_rays = 100
 fake_rays_range = num_rays - 1 + 2 * fake_rays
 
-
 # textures
 texture_width = 1200
 texture_height = 1200
 half_texture_height = texture_height // 2
 texture_scale = texture_width // tile
 
-
 # player settings
 player_pos = (half_width // 4, half_height - 50)
 player_angle = 0
 player_speed = 5
-
 
 # colors
 black = (0, 0, 0)
@@ -55,7 +49,6 @@ yellow = (255, 255, 0)
 skyblue = (9, 3, 29)
 red = (255, 0, 0)
 grassgreen = (10, 1, 28)
-
 
 # lvl
 level = storyteller.get_level()

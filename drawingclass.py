@@ -1,14 +1,9 @@
 import random
 import sys
-import pygame
 import settings
 from settings import *
-from ray_casting import ray_casting
 from collections import deque
 from weaponClass import Weapon
-import pygame as pg
-import numpy as np
-from numba import njit
 
 
 class Drawing:
@@ -31,12 +26,14 @@ class Drawing:
                       pygame.image.load('data/sprites/weapons/shotgun/default.png'),
                       deque([pygame.image.load(f'data/sprites/weapons/shotgun/{i}.png').convert_alpha()
                              for i in range(20)]), pygame.mixer.Sound('data/sounds/weapon/shotgun/shot1.mp3'), 3, 10,
-                      deque([pygame.image.load(f'data/sprites/sfx/shotgun/{i}.png').convert_alpha() for i in range(9)]), 1),
+                      deque([pygame.image.load(f'data/sprites/sfx/shotgun/{i}.png').convert_alpha() for i in range(9)]),
+                      1),
             2: Weapon(pygame.image.load('data/sprites/weapons/pistol/default.png'), 'pistol',
                       pygame.image.load('data/sprites/weapons/pistol/default.png'),
                       deque([pygame.image.load(f'data/sprites/weapons/pistol/{i}.png').convert_alpha()
                              for i in range(5)]), pygame.mixer.Sound('data/sounds/weapon/pistol/shot1.mp3'), 1, 10,
-                      deque([pygame.image.load(f'data/sprites/sfx/shotgun/{i}.png').convert_alpha() for i in range(9)]), 1)
+                      deque([pygame.image.load(f'data/sprites/sfx/shotgun/{i}.png').convert_alpha() for i in range(9)]),
+                      1)
 
         }
         self.weapon_base_sprite = self.weapon_dict[1].weapon_sprite
@@ -77,7 +74,6 @@ class Drawing:
                     return False
                 bt2.update()
                 pygame.draw.rect(self.sc, darkgrey, (150, 150, 800, 550))
-
                 bt1.draw(self.sc)
                 bt2.draw(self.sc)
                 self.sc.blit(render1, (60, 60))
@@ -111,12 +107,12 @@ class Drawing:
 
     def fps(self, clock):
         display_fps = str(int(clock.get_fps()))
-        render = self.font.render(display_fps, 0, red)
+        render = self.font.render(display_fps, False, red)
         self.sc.blit(render, (width - 65, 5))
 
     def quest_bar(self):
         quest = settings.name_quest
-        render = self.font.render(quest, 0, red)
+        render = self.font.render(quest, False, red)
         self.sc.blit(render, (65, 5))
 
     def hp_bar(self):
@@ -124,11 +120,9 @@ class Drawing:
         pygame.draw.rect(self.sc, (255, 0, 0),
                          (40, 660, 300, 75))
         pygame.draw.rect(self.sc, (0, 255, 0),
-                         (40, 660, 300*hp/100, 75))
-        render = self.font.render(f'{hp}/100', 0, white)
+                         (40, 660, 300 * hp / 100, 75))
+        render = self.font.render(f'{hp}/100', False, white)
         self.sc.blit(render, (150, 680))
-        # render = self.font.render(quest, 0, red)
-        # self.sc.blit(render, (65, 5))
 
     def player_weapon(self, shots):
         if settings.weapon_in_hand_trigger:
@@ -195,7 +189,7 @@ class Drawing:
             self.sc.blit(exit, (button_exit.centerx - 130, button_exit.centery - 70))
 
             color = random.randrange(40)
-            label = label_font.render('MindLess', 1, (color, color, color))
+            label = label_font.render('MindLess', True, (color, color, color))
             self.sc.blit(label, (15, -30))
 
             mouse_pos = pygame.mouse.get_pos()
@@ -211,14 +205,12 @@ class Drawing:
                 if mouse_click[0]:
                     pygame.quit()
                     sys.exit()
-
             pygame.display.flip()
             self.clock.tick(100)
 
 
 class Button:
     def __init__(self, text, x, y, width, height, name_of_speaker, command=None):
-
         self.text = text
         self.name_of_speaker = name_of_speaker
         self.command = command
@@ -243,17 +235,14 @@ class Button:
         self.rect.topleft = (x, y)
 
         self.hovered = False
-        # self.clicked = False
 
     def update(self):
-
         if self.hovered:
             self.image = self.image_hovered
         else:
             self.image = self.image_normal
 
     def draw(self, surface):
-
         surface.blit(self.image, self.rect)
 
     def handle_event(self, event):

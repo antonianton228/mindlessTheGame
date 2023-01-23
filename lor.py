@@ -1,10 +1,13 @@
 import settings
 
+
 def f1():
     settings.is_quests = False
 
+
 def f2():
     settings.is_quests = True
+
 
 class Story:
     def __init__(self, sprites, player, drawing):
@@ -14,7 +17,8 @@ class Story:
         self.kvests = {}
 
     def start_kvest(self, num_kvest):
-        self.drawing.dialoge_draw(f'Твое следующее задание: {self.kvests[num_kvest][0]}', f'{self.kvests[num_kvest][4]}', f'{self.kvests[num_kvest][5]}')
+        self.drawing.dialoge_draw(f'Твое следующее задание: {self.kvests[num_kvest][0]}',
+                                  f'{self.kvests[num_kvest][4]}', f'{self.kvests[num_kvest][5]}')
 
     def new_kvest(self, num_kvest):
         settings.needed_speaker = self.kvests[num_kvest][2]
@@ -36,7 +40,8 @@ class Story:
             ],
             2: [
                 'Убейте всех врагов',
-                not list(filter(lambda x: x.name == 'square' and not x.is_dead, self.sprites.dict_of_objects[settings.level])),
+                not list(filter(lambda x: x.name == 'square' and not x.is_dead,
+                                self.sprites.dict_of_objects[settings.level])),
                 'None1',
                 f2,
                 'Да, я иду',
@@ -51,7 +56,7 @@ class Story:
                 'Надо немного подождать'
             ],
             4: [
-                'Все',
+                'На выход',
                 False,
                 'None',
                 f2,

@@ -17,17 +17,6 @@ class Sprites:
                 'animation_speed': 10,
                 'blocked': True,
             },
-
-            'elf': {
-                'sprite': [pygame.image.load(f'data/sprites/unstatic/vert/elf/{i}.png').convert_alpha() for i in range(1, 6)],
-                'viewing_angles': True,
-                'shift': 1.8,
-                'scale': (0.4, 0.4),
-                'animation': [],
-                'animation_dist': 800,
-                'animation_speed': 10,
-                'blocked': True,
-            },
             'floor': {
                 'sprite': pygame.image.load('data/textures/grass.jpg').convert_alpha(),
                 'viewing_angles': None,
@@ -119,8 +108,6 @@ class Sprites:
                 SpriteObject(self.sprite_parameters['square'], (5, 1)), ],
         }
 
-        # for i in :
-        #     list_of_objects.append(SpriteObject(self.sprite_parameters['sprite-barrel'],  (i[0] // 100, i[1] // 100)))
     @property
     def sprite_hit(self):
         return min([obj.is_on_fire for obj in self.list_of_objects], default=(float('inf'), 0))
@@ -164,10 +151,6 @@ class SpriteObject:
                                      [frozenset(range(i, i + 23)) for i in range(11, 348, 23)]
             self.sprite_position = {angle: pos for angle, pos in zip(self.sprite_angles, self.object)}
 
-
-
-
-
     @property
     def is_on_fire(self):
         if center_ray - self.side // 2 < self.current_ray < center_ray + self.side // 2 and self.blocked:
@@ -176,7 +159,6 @@ class SpriteObject:
     @property
     def pos(self):
         return self.x - self.side // 2 , self.y - self.side // 2
-
 
     def get_damage(self):
         return self.damage
@@ -214,10 +196,6 @@ class SpriteObject:
             else:
                 self.object = self.visible()
                 sprite_object = self.anim()
-
-
-            #anim
-
 
             # scaling
             sprite_pos = (self.current_ray * scale - half_sprite_width, half_height - half_sprite_height + shift)

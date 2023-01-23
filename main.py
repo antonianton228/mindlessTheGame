@@ -1,4 +1,3 @@
-import pygame
 import settings
 from playerclass import Player
 import maps
@@ -9,9 +8,6 @@ from npc_ai import Interaction
 import storyteller
 from lor import Story
 
-
-
-
 pygame.init()
 sc = pygame.display.set_mode((width, height))
 clock = pygame.time.Clock()
@@ -19,7 +15,6 @@ sprites = Sprites()
 player = Player(sprites)
 drawing = Drawing(sc, player, clock)
 interaction = Interaction(player, sprites, drawing)
-
 
 pygame.mouse.set_visible(True)
 drawing.menu()
@@ -70,8 +65,6 @@ while flagloop:
             player = Player(sprites)
             drawing = Drawing(sc, player, clock)
             interaction = Interaction(player, sprites, drawing)
-
-
 
     if not flagloop:
         break
